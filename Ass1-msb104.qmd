@@ -1,7 +1,30 @@
 ---
-title: "Ass1-msb104"
-format: html
-editor: visual
+title: "Arbeidskrav 1 – msb104"
+subtitle: "Regresjonsanalyse av offentlig FoU i europeiske regioner"
+author: "Gruppemedlemmer"
+date: last-modified
+date-format: "dddd D MMM, YYYY"
+
+lang: nb
+papersize: a4
+
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    code-fold: false
+    code-tools: true
+    number-sections: true
+  
+  typst:
+    toc: true
+    number-sections: true
+
+execute:
+  warning: false
+  message: false
+
+abstract: (kort sammendrag)
 ---
 
 ## 
@@ -22,13 +45,13 @@ options(paged.print = FALSE)
 load(file = 'eu0823.RData', verbose = TRUE)
 ```
 
-# 1) Sammendrag
+# Sammendrag
 
 Fitjar (2025) (KILDE!!!) undersøker hvordan offentlige midler til forskning og utvikling (FoU) fordeles mallom europeiske regioner, og om fordelingen bidrar til å opprettholde eller forsterke regionale forskjeller. Studien bruker data fra Eurostat for 200 europeiske regioner i perioden 2009-2018 og sammenligner utviklingen i offentlig FoU med FoU i næringslivet.
 
 Resultatene viser at mer utviklede regioner mottar mer oppentlige FoU-midler, særlig i sammenheng med høyere humankapital og mer FoU i næringslivet. Studien finner beta-konvergens i offentlig FoU, som betyr at regioner med lave utdanningsnivåer har hatt raskere vekst. Likevel finner den ikke sigma-konvergens, altså en reduksjon i den samlede spredningen mellom regionene. For næingslivets FoU finner studien begge former for konvergens. Fitjar konkluderer med at offentlig FoU-finansiering i stor grad kanaliseres til allerede ressurssterke regioner og dermed kan bidra til å opprettholde eller forsterke regionale forskjeller.
 
-# 2) Systemet med NUTS regioner i EUs regional-data
+# Systemet med NUTS regioner i EUs regional-data
 
 NUTS står for "Nomenclature of Territorial Units for Statistics" og er EUś system for å dele land inn i geografiske områder til statistiske formål. Systemet brukes av Eurostat for å organisere regional statistikk og gjøre det lettere å sammenligne blant annet økonomi, befoklning og forskningsaktivitet mellom regioner i ulike land. (KILDE EUROSTAT!!!)
 
@@ -36,7 +59,7 @@ Inndelingen er hierarkisk og består av tre nivåer. NUTS 1 omfatter store sosio
 
 Inndelingen bygger så langt som mulig på eksisterende administrative grenser. Det finnes også veiledende befolkningsgrenser for hvert nivå for å gjøre regionene mer sammenlignbare. NUTS gjør det mulig å undersøke forskjeller innad i land som ellers kan bli skjult når man bare sammenligner nasjonale gjennomsnitt.
 
-# 3) Beskrivende statistikk og korrelasjonsmatrise
+# Beskrivende statistikk og korrelasjonsmatrise
 
 ## Bekrivende statistikk
 
@@ -202,7 +225,7 @@ De høyeste verdiene finnes blant annet i norditalienske regioner og Sluttgart, 
 
 De høyeste verdiene finnes i avgrensede byregioner, mens de laveste finnnes i større områder i Sverige og Finland. Dette virker rimelig fordi byområder har mange innbyggere på lite areal, mens større nordiske regioner kan ha mye ubebodd areal. Melilla har en gjennomsnitlig befolkningstetthet på 6038 mens Ovre Norrland har omtrent 3,38.
 
-# 8) Land regioner og tidsperiode Fitjar 
+# 8) Land regioner og tidsperiode Fitjar
 
 Fitjar (2025) undersøker 200 regioner, 20 europeiske land i perioden 2009-2018.
 
@@ -239,3 +262,89 @@ eu0823 <- eu0823 |>
 ```
 
 Det kan være fornuftlig å utelate regionene dersom de har særtrekk eller peroblemer med datakvaliteten som gjør dem lite sammenlignbare med resten av regionene. Samtidig er lave eller høye verdier ikke alene en god nok begrunnelse til å fjerne observasjoner siden de kan gjenspeile reelle regionale forskjeller. Utelatelsen reduserer også den geografiske dekningen og kan påvirke resultatet. Valget bør derfor begrunnes ut fra regionenes egenskaper og datakvalitet, og helst vurderes med å sammenligne analysen både med og uten disse regionene.
+
+# 11) Modell 2: Regresjonsanalyse
+
+For å undersøke hvilke faktorer som henger sammen med offentlige FoU, beregner vi gjennomsnittsverdier for hver NUTS2-region i perioden 2008-2023. Etter at fem regioner er fjernet i oppgave 10, består datasettet av 191 regioner.
+
+```{r}
+# Lager logaritmer og beregner gjennomsnitt per region
+eu_mean <- eu0823 |>
+  mutate(
+    log_pub_RD = log(pub_RD),
+    log_priv_RD = log(priv_RD)
+  ) |>
+  group_by(geo) |>
+  summarise(
+    country = substr(first(geo), 1, 2),
+    across(
+      c(log_pub_RD, log_priv_RD,
+        GDP_log, Capital, Manuf,
+        Density_log, edu),
+      ~ mean(.x, na.rm = TRUE)
+    ),
+    .groups = "drop"
+  )
+
+# Kontrollerer antall regioner
+nrow(eu_mean)
+
+```
+
+Vi gjennomfører deretter sju regresjonsanalyser med offentlig FoU som avhengig variabel. I den første modellen inkluderer vi bare BNP, før vi gradvis legger til land, privat FoU, hovedstadsstatus, industri, befolkningstetthet og utdanning. Dette gjør det mulig å undersøke hvordan sammenhengene endrer seg når vi kontrollerer for flere forhold.
+
+```{r}
+# Modell 1: BNP
+m1 <- lm(log_pub_RD ~ GDP_log, data = eu_mean)
+
+# Modell 2: Legger til land
+m2 <- lm(log_pub_RD ~ GDP_log + country,
+         data = eu_mean)
+
+# Modell 3: Legger til privat FoU
+m3 <- update(m2, . ~ . + log_priv_RD)
+
+# Modell 4: Legger til hovedstadsregion
+m4 <- update(m3, . ~ . + Capital)
+
+# Modell 5: Legger til industri
+m5 <- update(m4, . ~ . + Manuf)
+
+# Modell 6: Legger til befolkningstetthet
+m6 <- update(m5, . ~ . + Density_log)
+
+# Modell 7: Legger til utdanning
+m7 <- update(m6, . ~ . + edu)
+
+
+```
+
+Resultatene fra de sju regresjonsmodellene er samlet i tabellen nedenfor, slik at vi kan sammenligne koeffisientenes fortegn og statistiske signifikans med Fitjar (2025).
+
+```{r}
+
+# Samler modellene i en tabell
+modelsummary::modelsummary(
+  list(
+    "(1)" = m1, "(2)" = m2,
+    "(3)" = m3, "(4)" = m4,
+    "(5)" = m5, "(6)" = m6,
+    "(7)" = m7
+  ),
+  coef_omit = "^country",
+  statistic = "({statistic})",
+  stars = TRUE,
+  output = "flextable"
+) |>
+  flextable::theme_booktabs() |>
+  flextable::autofit()
+
+```
+
+Regresjonsresultatene viser at BNP har en positiv og signifikant sammenheng med offentlig FoU i de første modellene. I modell 1 er koeffisienten 0,857 (p \< 0,001). Når flere forklaringsvariabler inkluderes, endrer sammenhengen seg. I modell 4 er koeffisienten blirr negativ (-0,048), men er ikke lenger statistisk signifikant. I modell 7 er koeffisienten enda mer redusert til -0,757 og signifiknat på 1%-nivå. Dette viser at sammenhengen mellom BNP og offentlig FoU endrer seg når vi kontrollerer for andre regionale forhold.
+
+I modell 4 har privat FoU en positiv koeffisient på 0,133, som er signifikant på 10%-nivå. Hovedstadsstatus har også en positiv og signifikant sammenheng med offentlig FoU, med en koeffisient på 0,911 (p \< 0,001). I modell 7 er derimot verken privat FoU (0,018) eller hovedstadsstatus (0,043) statistisk signifikante. Utdanning har en positiv og statistisk signifikant sammenheng med offentlig FoU i modell 7, med en koeffisient på 0,089 (p \< 0,001). Industri og befolkningstetthet er ikke statistisk signifikante i den siste modellen.
+
+## Sammenligning med Fitjar (2025)
+
+Resulatene samsvarer på flere omrdåer med Fitjar (2025). Begge analysene finner en negativ og signifikant sammenheng mellom BNP og offentlig FoU i den siste modellen, mens utdanning har en positiv og signifikant sammenheng. Privat FoU og industri er derimot signifikante hos Fitjar. Funnene støtter dermed delvis konklusjonen om at regioner med mye ressurser får mer offentlig FoU.
