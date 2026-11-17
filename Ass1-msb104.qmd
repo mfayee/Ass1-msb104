@@ -263,7 +263,7 @@ eu0823 <- eu0823 |>
 
 Det kan være fornuftlig å utelate regionene dersom de har særtrekk eller peroblemer med datakvaliteten som gjør dem lite sammenlignbare med resten av regionene. Samtidig er lave eller høye verdier ikke alene en god nok begrunnelse til å fjerne observasjoner siden de kan gjenspeile reelle regionale forskjeller. Utelatelsen reduserer også den geografiske dekningen og kan påvirke resultatet. Valget bør derfor begrunnes ut fra regionenes egenskaper og datakvalitet, og helst vurderes med å sammenligne analysen både med og uten disse regionene.
 
-# 11) Modell 2: Regresjonsanalyse
+# Modell 2: Regresjonsanalyse
 
 For å undersøke hvilke faktorer som henger sammen med offentlige FoU, beregner vi gjennomsnittsverdier for hver NUTS2-region i perioden 2008-2023. Etter at fem regioner er fjernet i oppgave 10, består datasettet av 191 regioner.
 
@@ -348,3 +348,41 @@ I modell 4 har privat FoU en positiv koeffisient på 0,133, som er signifikant p
 ## Sammenligning med Fitjar (2025)
 
 Resulatene samsvarer på flere omrdåer med Fitjar (2025). Begge analysene finner en negativ og signifikant sammenheng mellom BNP og offentlig FoU i den siste modellen, mens utdanning har en positiv og signifikant sammenheng. Privat FoU og industri er derimot signifikante hos Fitjar. Funnene støtter dermed delvis konklusjonen om at regioner med mye ressurser får mer offentlig FoU.
+
+# Vurdering av robuste standardfeil 
+
+For å undersøke om vi bør bruke robuste standardfeil, ser vi på residualplottet fra modell 7 og gjennomfører en alternativ White-test. Testen brukes for å undersøke om det er tegn til heteroskedastisitet i modellen.
+
+```{r}
+
+# Lager residualplott for modell 7
+plot(m7, which = 1)
+
+```
+
+```{r}
+
+# Henter residualer og predikerte verdier
+testdata <- tibble(
+  fit = fitted(m7),
+  residual = residuals(m7)
+)
+
+# Alternativ White-test
+white_test <- lm(
+  I(residual^2) ~ fit + I(fit^2),
+  data = testdata
+)
+
+# Viser resultatene
+summary(white_test)
+
+```
+
+For å tolke resulatene bruker vi F-testens p-verdi for å undersøke om de predikerte verdiene samlet har sammenheng med de kvadrerte residualene.
+
+**Nullhypotesen (H₀):** De predikerte verdiene og deres kvadrat forklarer ikke variasjonen i de kvadrerte residualene.
+
+**Alternativ hypotese (H₁):** Minst en av variablene har en sammenheng med de kvadrerte residualene.
+
+Residualplottet viser noe variasjon i spredningen av residualene, men ingen tydelig systematisk endring. Den alternative White-testen gir en p-verdi på 0,3169, som er høyere enn signifikansnivået på 0,05. Vi forkaster derfor ikke nullhypotesen. Testen gir derfor ikke statistisk signifikante tegn til heteroskedastisitet, og det er ikke tydelig behov for robuste standardfeil.
