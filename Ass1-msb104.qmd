@@ -201,3 +201,41 @@ De høyeste verdiene finnes blant annet i norditalienske regioner og Sluttgart, 
 ## Density
 
 De høyeste verdiene finnes i avgrensede byregioner, mens de laveste finnnes i større områder i Sverige og Finland. Dette virker rimelig fordi byområder har mange innbyggere på lite areal, mens større nordiske regioner kan ha mye ubebodd areal. Melilla har en gjennomsnitlig befolkningstetthet på 6038 mens Ovre Norrland har omtrent 3,38.
+
+# 8) Land regioner og tidsperiode Fitjar 
+
+Fitjar (2025) undersøker 200 regioner, 20 europeiske land i perioden 2009-2018.
+
+# 9) Land regioner og tidsperiode vårt datasett
+
+```{r}
+eu0823 |>
+  summarise(
+    Antall_land = n_distinct(substr(geo, 1, 2)),
+    Antall_regioner = n_distinct(geo),
+    Første_år = min(time, na.rm = TRUE),
+    Siste_år = max(time, na.rm = TRUE),
+    Antall_observasjoner = n()
+  ) |>
+  flextable::flextable() |>
+  flextable::autofit()
+```
+
+Vårt datasett omfatter 196 NUTS-2 regioner i 17 land i perioden 2008-2023, totalt 3136 observasjoner. Fitjar (2025) undersøker 200 regioner, 20 europeiske land i perioden 2009-2018, med 2000 observasjoner. Vårt datasett har dermed fem færre land og fire færre regioner, men dekker 16 år sammenlignet med Fitjar sine 10 år. Den lengre tidsperioden gir flere observasjoner, selv om den geografiske dekningen er mindre. Forskjellene i utvalg og tidsperiode kan bidra til at resultatene våre avviker fra artikkelen.
+
+# 10) Dropper 5 regioner
+
+```{r}
+eu0823 |>
+  filter(geo %in% c("EL42", "EL62", "ES63", "ES64", "RO22")) |>
+  distinct(geo, name) |>
+  flextable::flextable() |>
+  flextable::autofit()
+```
+
+```{r}
+eu0823 <- eu0823 |> 
+  filter(!geo %in% c("EL42", "EL62", "ES63", "ES64", "RO22"))
+```
+
+Det kan være fornuftlig å utelate regionene dersom de har særtrekk eller peroblemer med datakvaliteten som gjør dem lite sammenlignbare med resten av regionene. Samtidig er lave eller høye verdier ikke alene en god nok begrunnelse til å fjerne observasjoner siden de kan gjenspeile reelle regionale forskjeller. Utelatelsen reduserer også den geografiske dekningen og kan påvirke resultatet. Valget bør derfor begrunnes ut fra regionenes egenskaper og datakvalitet, og helst vurderes med å sammenligne analysen både med og uten disse regionene.
