@@ -1,0 +1,203 @@
+---
+title: "Ass1-msb104"
+format: html
+editor: visual
+---
+
+## 
+
+```{r}
+library(tidyverse)
+library(modelr)
+library(flextable)
+library(plm)
+library(vtable)
+library(rstatix)
+library(modelsummary)
+
+options(paged.print = FALSE)
+```
+
+```{r}
+load(file = 'eu0823.RData', verbose = TRUE)
+```
+
+# 1) Sammendrag
+
+Fitjar (2025) (KILDE!!!) undersøker hvordan offentlige midler til forskning og utvikling (FoU) fordeles mallom europeiske regioner, og om fordelingen bidrar til å opprettholde eller forsterke regionale forskjeller. Studien bruker data fra Eurostat for 200 europeiske regioner i perioden 2009-2018 og sammenligner utviklingen i offentlig FoU med FoU i næringslivet.
+
+Resultatene viser at mer utviklede regioner mottar mer oppentlige FoU-midler, særlig i sammenheng med høyere humankapital og mer FoU i næringslivet. Studien finner beta-konvergens i offentlig FoU, som betyr at regioner med lave utdanningsnivåer har hatt raskere vekst. Likevel finner den ikke sigma-konvergens, altså en reduksjon i den samlede spredningen mellom regionene. For næingslivets FoU finner studien begge former for konvergens. Fitjar konkluderer med at offentlig FoU-finansiering i stor grad kanaliseres til allerede ressurssterke regioner og dermed kan bidra til å opprettholde eller forsterke regionale forskjeller.
+
+# 2) Systemet med NUTS regioner i EUs regional-data
+
+NUTS står for "Nomenclature of Territorial Units for Statistics" og er EUś system for å dele land inn i geografiske områder til statistiske formål. Systemet brukes av Eurostat for å organisere regional statistikk og gjøre det lettere å sammenligne blant annet økonomi, befoklning og forskningsaktivitet mellom regioner i ulike land. (KILDE EUROSTAT!!!)
+
+Inndelingen er hierarkisk og består av tre nivåer. NUTS 1 omfatter store sosioøkonomiske regioner, NUTS 2 omfatter mindre regioner som er særlig viktige for regionalpolitikk, og NUTS 3 omfatter små regioner for mer dataljerte analyser. En NUTS 1-region deles dermes inn i NUTS 2-regioner, som igjen deles inn i NUTS 3-regioner.
+
+Inndelingen bygger så langt som mulig på eksisterende administrative grenser. Det finnes også veiledende befolkningsgrenser for hvert nivå for å gjøre regionene mer sammenlignbare. NUTS gjør det mulig å undersøke forskjeller innad i land som ellers kan bli skjult når man bare sammenligner nasjonale gjennomsnitt.
+
+# 3) Beskrivende statistikk og korrelasjonsmatrise
+
+## Bekrivende statistikk
+
+```{r}
+# Lager logaritmerte variabler
+eu0823 <- eu0823 |>
+  mutate(
+    GDP_log = log(GDP),
+    Density_log = log(Density)
+  )
+
+# Velger variablene til tabellen
+variabler <- eu0823 |>
+  select(pub_RD, priv_RD, Capital, GDP_log,
+         Manuf, Density_log, edu)
+
+# Beregner beskrivende statistikk
+beskrivende <- vtable::st(
+  variabler,
+  summ = c(
+    "notNA(x)",
+    "mean(x)",
+    "sd(x)",
+    "min(x)",
+    "quantile(x, probs = 0.25, na.rm = TRUE)",
+    "quantile(x, probs = 0.75, na.rm = TRUE)",
+    "max(x)"
+  ),
+  summ.names = c(
+    "N", "Mean", "Std. Dev.", "Min",
+    "Pctl. 25", "Pctl. 75", "Max"
+  ),
+  digits = 3,
+  out = "return"
+)
+
+flextable::flextable(beskrivende) |>
+  flextable::theme_booktabs() |>
+  flextable::autofit()
+```
+
+Beskrivende statistikk Fitjar
+
+![](images/clipboard-1320068803.png)
+
+### Sammenligning beskrivende statistikk
+
+Vårt datasett har 3136 observasjoner, mens Fitjar (2025) har 2000 for de fleste variablene. Datasettet vårt dekker perioden 2008-2023, mens artikkelens hovedanalyse dekker 2009-2018. Gjennomsnittet for logaritmert BNP er -0,084 i begge tabellene, og utdanningsvariabelen har også et relativt likt gjennomsnitt. Befokningstettheten er noe høyere hoss oss, mens andelen hovedstadsregioner er litt lavere.
+
+Industrivariabelen skiller seg mest ut, med et stanadardavvik på 14,1 hos oss mot 7,379 i artikkelen. Maksimumsverdien på 116 bør undersøkes dersom variabelen måler en prosentandel. FoU-variablene kan ikke sammenlignes direkte, siden artikkelen bruker logaritmerte verdier. Samlet ligner datasettene på flere områder, men forskjeller i periode, utvalg, og variabelbehandling begrenser sammenlignbarheten.
+
+# Korrelasjonsmatrise 2009
+
+```{r}
+# Velger bare observasjoner fra 2009 og de aktuelle variablene
+korrelasjon_2009 <- eu0823 |>
+  filter(time == 2009) |>
+  select(pub_RD, priv_RD, Capital, GDP_log,
+         Manuf, Density_log, edu) |>
+  rstatix::cor_mat() |>
+  rstatix::pull_lower_triangle(diag = TRUE)
+
+# Viser resultatet som en tabell
+flextable::flextable(korrelasjon_2009) |>
+  flextable::theme_booktabs() |>
+  flextable::autofit()
+```
+
+Korrelasjonsmatrise Fitjar
+
+![](images/clipboard-1113045895.png)
+
+## Sammenligning korrelasjonsmatrise 2009
+
+Korrelasjonsmatrisen vår viser flere likheter med tabell A5 i Fitjar (2025). Korrelasjonen mellom offentlig og privat FoU er 0,50 hos oss mot 0,52 i artikkelen. Sammenhengen mellom hovedstadregion og BNP er også relativt lik, med 0,66 hos oss mot 0,65 i artikkelen. Utdanning er positivt korrelert med BNP i begge datasettene, men sammenhengen er noe svakere hos oss med 0,62 mot 0,69 i artikkelen.
+
+Industrivariabelen viser tydelige foskjeller. Korrelasjonen med offentlig FoU er omtrent 0 hos oss mot -0,44 i artikkelen. Sammenhengene med BNP, utdanning og befolkningstetthet er positive hos oss og nagative i artikkelem. Forskjellene kan ha sammenheng med at industrivariabelen har ulik fordeling i datasttene. Samlet samsvarer flere av sammenhengene godt, men særlig industrivariabelen skiller seg ut. Artikkelens bruk av logaritmerte FoU-variabler begrenser også den direkte sammenlignbarheten.
+
+# 5) Sammenligning korrelasjonsmatrise 2009-2023 og 2009
+
+## Korrelasjonsmatrise fra 2008-2023
+
+```{r}
+# Velger perioden og variablene
+korrelasjon_alle <- eu0823 |>
+  filter(time >= 2008, time <= 2023) |>
+  select(pub_RD, priv_RD, Capital, GDP_log,
+         Manuf, Density_log, edu) |>
+  rstatix::cor_mat() |>
+  rstatix::pull_lower_triangle(diag = TRUE)
+
+# Viser korrelasjonsmatrisen som en tabell
+flextable::flextable(korrelasjon_alle) |>
+  flextable::theme_booktabs() |>
+  flextable::autofit()
+```
+
+## Korrelasjonsmatrise Table A5 Fitjar
+
+![](images/clipboard-3737378573.png)
+
+## Sammenligning
+
+Når vi sammenligner vår korrelasjonsmatrise for 2008-2023 med Fitjar (2025) matrise for 2009 i tabell A.5, finner vi både likheter og forskjeller. Korrelasjonen mellom utdanning og BNP er 0,72 hos oss mot 0,69 hos Fitjar. Dette er nærmere artikkelens verdi enn vår korrelasjon på 0,62 for 2009. Sammenhengen mellom offentlig og privar FoU samsvarer derimot dårligere. Den er 0,41 for hele perioden, sammenlignet med 0,52 hos Fitjar og 0,50 i våre 2009-data. Industrivariabelen har fortsatt flere sammenhenger med motsatt fortegn sammenlignet med artikkelen. Hele perioden gir dermed samsvar for enkelte korrelasjoner, men ikke et entydig bedre samsvar samlet sett.
+
+# 6) Variablene GDP, Manuf og Destiny
+
+Variabalen GPD måler regionens BNP per innbygger relativt til landsgjennomsnittet. I analysen brukes den naturlige logariten av dette forholdet. Variabelen viser dermed regionens økonomiske nivå sammenlignet med landet den tilhører.
+
+Variabelen Manuf måler hvor stor prosentandel av den samlede sysselsettingen i regionen som er innen industriproduksjon. Variabelen beskriver hvor indusripreget regionens næringsstrukttur er.
+
+Destiny måler befolkningstettheten, altså innbyggere per kvadrarkilometer. I analysen brukes den naturlige logaritmen av befolkningstetthete.
+
+# 7) NUTS 2 regioner GPD, Manuf og Destiny
+
+```{r}
+# Beregner gjennomsnitt for hver region
+regionverdier <- eu0823 |>
+  group_by(geo, name) |>
+  summarise(
+    across(
+      c(GDP, Manuf, Density),
+      ~ mean(.x, na.rm = TRUE)
+    ),
+    .groups = "drop"
+  )
+
+# Finner fem høyeste og fem laveste for hver variabel
+topp_bunn <- regionverdier |>
+  pivot_longer(
+    cols = c(GDP, Manuf, Density),
+    names_to = "Variabel",
+    values_to = "Verdi"
+  ) |>
+  filter(is.finite(Verdi)) |>
+  group_by(Variabel) |>
+  group_modify(~ bind_rows(
+    .x |>
+      slice_max(Verdi, n = 5, with_ties = FALSE) |>
+      mutate(Gruppe = "Høyest"),
+    .x |>
+      slice_min(Verdi, n = 5, with_ties = FALSE) |>
+      mutate(Gruppe = "Lavest")
+  )) |>
+  ungroup() |>
+  select(Variabel, Gruppe, geo, name, Verdi)
+
+# Viser resultatene
+flextable::flextable(topp_bunn) |>
+  flextable::colformat_num(j = "Verdi", digits = 2) |>
+  flextable::autofit()
+```
+
+# GPD
+
+De høyeste verdiene for GDP finnes i hovedstadregioner, mens de laveste finnes i Sør-Italia, nordøstlige Romania og nordvestlige Bulgaria. Dette virkeer rimelig ut fra at hovedstadregioner ofte samler mye økonomisk aktivitet. Variabelen måler BNP per innbygger relativt til eget landsgjennomsnitt. Bratislavský kraj sin verdi på omtrent 2,39 betyr dermed at BNP per inbygger ligger rundt 139 prosent over landsgjennomsnittet. Rangeringen viser derfor ikke nødvendigvis hvilke regioner som er rikest i Europa i absolutte tall.
+
+## Manuf
+
+De høyeste verdiene finnes blant annet i norditalienske regioner og Sluttgart, mens de laveste finnes i mindre by-, øy-, og fjellregioner. Rangeringen kan virke rimelig, men verdiene samsvarer ikke uten videre med artikkelens definisjon av Manuf som prosentandelen sysselsatte innen industriproduskjon. Lombardia har et gjennomsnitt på 112,4 som ikke kan være en prosentandel. Måleenheten og beregningen i datasettet bør derfor undersøkes før tallene tolkes som industriandeler.
+
+## Density
+
+De høyeste verdiene finnes i avgrensede byregioner, mens de laveste finnnes i større områder i Sverige og Finland. Dette virker rimelig fordi byområder har mange innbyggere på lite areal, mens større nordiske regioner kan ha mye ubebodd areal. Melilla har en gjennomsnitlig befolkningstetthet på 6038 mens Ovre Norrland har omtrent 3,38.

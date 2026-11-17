@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Ass1-msb104</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="Ass1-msb104_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Ass1-msb104_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="Ass1-msb104_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="Ass1-msb104_files/libs/quarto-html/popper.min.js"></script>
+<script src="Ass1-msb104_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Ass1-msb104_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Ass1-msb104_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Ass1-msb104_files/libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Ass1-msb104_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Ass1-msb104_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Ass1-msb104_files/libs/bootstrap/bootstrap-138a6193a3bd40baf1e627da441a4734.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="Ass1-msb104_files/libs/tabwid-1.1.3/tabwid.css" rel="stylesheet">
+<script src="Ass1-msb104_files/libs/tabwid-1.1.3/tabwid.js"></script>
+
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Ass1-msb104</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="section" class="level2">
+<h2 class="anchored" data-anchor-id="section"></h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.2.1     ✔ readr     2.2.0
+✔ forcats   1.0.1     ✔ stringr   1.6.0
+✔ ggplot2   4.0.3     ✔ tibble    3.3.1
+✔ lubridate 1.9.5     ✔ tidyr     1.3.2
+✔ purrr     1.2.2     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(modelr)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(flextable)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'flextable'
+
+The following object is masked from 'package:purrr':
+
+    compose</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'plm'
+
+The following objects are masked from 'package:dplyr':
+
+    between, lag, lead</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vtable)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: kableExtra
+
+Attaching package: 'kableExtra'
+
+The following objects are masked from 'package:flextable':
+
+    as_image, footnote
+
+The following object is masked from 'package:dplyr':
+
+    group_rows</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rstatix)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'rstatix'
+
+The following object is masked from 'package:stats':
+
+    filter</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(modelsummary)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">paged.print =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="at">file =</span> <span class="st">'eu0823.RData'</span>, <span class="at">verbose =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Loading objects:
+  eu0823</code></pre>
+</div>
+</div>
+</section>
+<section id="sammendrag" class="level1">
+<h1>1) Sammendrag</h1>
+<p>Fitjar (2025) (KILDE!!!) undersøker hvordan offentlige midler til forskning og utvikling (FoU) fordeles mallom europeiske regioner, og om fordelingen bidrar til å opprettholde eller forsterke regionale forskjeller. Studien bruker data fra Eurostat for 200 europeiske regioner i perioden 2009-2018 og sammenligner utviklingen i offentlig FoU med FoU i næringslivet.</p>
+<p>Resultatene viser at mer utviklede regioner mottar mer oppentlige FoU-midler, særlig i sammenheng med høyere humankapital og mer FoU i næringslivet. Studien finner beta-konvergens i offentlig FoU, som betyr at regioner med lave utdanningsnivåer har hatt raskere vekst. Likevel finner den ikke sigma-konvergens, altså en reduksjon i den samlede spredningen mellom regionene. For næingslivets FoU finner studien begge former for konvergens. Fitjar konkluderer med at offentlig FoU-finansiering i stor grad kanaliseres til allerede ressurssterke regioner og dermed kan bidra til å opprettholde eller forsterke regionale forskjeller.</p>
+</section>
+<section id="systemet-med-nuts-regioner-i-eus-regional-data" class="level1">
+<h1>2) Systemet med NUTS regioner i EUs regional-data</h1>
+<p>NUTS står for “Nomenclature of Territorial Units for Statistics” og er EUś system for å dele land inn i geografiske områder til statistiske formål. Systemet brukes av Eurostat for å organisere regional statistikk og gjøre det lettere å sammenligne blant annet økonomi, befoklning og forskningsaktivitet mellom regioner i ulike land. (KILDE EUROSTAT!!!)</p>
+<p>Inndelingen er hierarkisk og består av tre nivåer. NUTS 1 omfatter store sosioøkonomiske regioner, NUTS 2 omfatter mindre regioner som er særlig viktige for regionalpolitikk, og NUTS 3 omfatter små regioner for mer dataljerte analyser. En NUTS 1-region deles dermes inn i NUTS 2-regioner, som igjen deles inn i NUTS 3-regioner.</p>
+<p>Inndelingen bygger så langt som mulig på eksisterende administrative grenser. Det finnes også veiledende befolkningsgrenser for hvert nivå for å gjøre regionene mer sammenlignbare. NUTS gjør det mulig å undersøke forskjeller innad i land som ellers kan bli skjult når man bare sammenligner nasjonale gjennomsnitt.</p>
+</section>
+<section id="beskrivende-statistikk-og-korrelasjonsmatrise" class="level1">
+<h1>3) Beskrivende statistikk og korrelasjonsmatrise</h1>
+<section id="bekrivende-statistikk" class="level2">
+<h2 class="anchored" data-anchor-id="bekrivende-statistikk">Bekrivende statistikk</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Lager logaritmerte variabler</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>eu0823 <span class="ot">&lt;-</span> eu0823 <span class="sc">|&gt;</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">GDP_log =</span> <span class="fu">log</span>(GDP),</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">Density_log =</span> <span class="fu">log</span>(Density)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Velger variablene til tabellen</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>variabler <span class="ot">&lt;-</span> eu0823 <span class="sc">|&gt;</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(pub_RD, priv_RD, Capital, GDP_log,</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>         Manuf, Density_log, edu)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Beregner beskrivende statistikk</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>beskrivende <span class="ot">&lt;-</span> vtable<span class="sc">::</span><span class="fu">st</span>(</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>  variabler,</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">summ =</span> <span class="fu">c</span>(</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"notNA(x)"</span>,</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"mean(x)"</span>,</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sd(x)"</span>,</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"min(x)"</span>,</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"quantile(x, probs = 0.25, na.rm = TRUE)"</span>,</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">"quantile(x, probs = 0.75, na.rm = TRUE)"</span>,</span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">"max(x)"</span></span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">summ.names =</span> <span class="fu">c</span>(</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>    <span class="st">"N"</span>, <span class="st">"Mean"</span>, <span class="st">"Std. Dev."</span>, <span class="st">"Min"</span>,</span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Pctl. 25"</span>, <span class="st">"Pctl. 75"</span>, <span class="st">"Max"</span></span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">digits =</span> <span class="dv">3</span>,</span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">out =</span> <span class="st">"return"</span></span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>flextable<span class="sc">::</span><span class="fu">flextable</span>(beskrivende) <span class="sc">|&gt;</span></span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>  flextable<span class="sc">::</span><span class="fu">theme_booktabs</span>() <span class="sc">|&gt;</span></span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a>  flextable<span class="sc">::</span><span class="fu">autofit</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="tabwid"><style>.cl-931f2aec{}.cl-931b0804{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-931cae16{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-931cc09a{width:1.083in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-931cc0a4{width:0.625in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-931cc0a5{width:0.752in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-931cc0ae{width:0.914in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-931cc0af{width:0.718in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-931cc0b0{width:0.795in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-931cc0b8{width:0.668in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-931cc0b9{width:1.083in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-931cc0ba{width:0.625in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-931cc0c2{width:0.752in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-931cc0c3{width:0.914in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-931cc0c4{width:0.718in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-931cc0cc{width:0.795in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-931cc0cd{width:0.668in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-931cc0d6{width:1.083in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-931cc0d7{width:0.625in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-931cc0d8{width:0.752in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-931cc0d9{width:0.914in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-931cc0e0{width:0.718in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-931cc0e1{width:0.795in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-931cc0e2{width:0.668in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-931f2aec"><thead><tr style="overflow-wrap:break-word;"><th class="cl-931cc09a"><p class="cl-931cae16"><span class="cl-931b0804">Variable</span></p></th><th class="cl-931cc0a4"><p class="cl-931cae16"><span class="cl-931b0804">N</span></p></th><th class="cl-931cc0a5"><p class="cl-931cae16"><span class="cl-931b0804">Mean</span></p></th><th class="cl-931cc0ae"><p class="cl-931cae16"><span class="cl-931b0804">Std. Dev.</span></p></th><th class="cl-931cc0af"><p class="cl-931cae16"><span class="cl-931b0804">Min</span></p></th><th class="cl-931cc0b0"><p class="cl-931cae16"><span class="cl-931b0804">Pctl. 25</span></p></th><th class="cl-931cc0b0"><p class="cl-931cae16"><span class="cl-931b0804">Pctl. 75</span></p></th><th class="cl-931cc0b8"><p class="cl-931cae16"><span class="cl-931b0804">Max</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-931cc0b9"><p class="cl-931cae16"><span class="cl-931b0804">pub_RD</span></p></td><td class="cl-931cc0ba"><p class="cl-931cae16"><span class="cl-931b0804">3136</span></p></td><td class="cl-931cc0c2"><p class="cl-931cae16"><span class="cl-931b0804">0.605</span></p></td><td class="cl-931cc0c3"><p class="cl-931cae16"><span class="cl-931b0804">0.455</span></p></td><td class="cl-931cc0c4"><p class="cl-931cae16"><span class="cl-931b0804">0.02</span></p></td><td class="cl-931cc0cc"><p class="cl-931cae16"><span class="cl-931b0804">0.27</span></p></td><td class="cl-931cc0cc"><p class="cl-931cae16"><span class="cl-931b0804">0.83</span></p></td><td class="cl-931cc0cd"><p class="cl-931cae16"><span class="cl-931b0804">2.72</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-931cc0b9"><p class="cl-931cae16"><span class="cl-931b0804">priv_RD</span></p></td><td class="cl-931cc0ba"><p class="cl-931cae16"><span class="cl-931b0804">3136</span></p></td><td class="cl-931cc0c2"><p class="cl-931cae16"><span class="cl-931b0804">0.961</span></p></td><td class="cl-931cc0c3"><p class="cl-931cae16"><span class="cl-931b0804">0.957</span></p></td><td class="cl-931cc0c4"><p class="cl-931cae16"><span class="cl-931b0804">0.01</span></p></td><td class="cl-931cc0cc"><p class="cl-931cae16"><span class="cl-931b0804">0.33</span></p></td><td class="cl-931cc0cc"><p class="cl-931cae16"><span class="cl-931b0804">1.27</span></p></td><td class="cl-931cc0cd"><p class="cl-931cae16"><span class="cl-931b0804">7.27</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-931cc0b9"><p class="cl-931cae16"><span class="cl-931b0804">Capital</span></p></td><td class="cl-931cc0ba"><p class="cl-931cae16"><span class="cl-931b0804">3136</span></p></td><td class="cl-931cc0c2"><p class="cl-931cae16"><span class="cl-931b0804">0.0867</span></p></td><td class="cl-931cc0c3"><p class="cl-931cae16"><span class="cl-931b0804">0.281</span></p></td><td class="cl-931cc0c4"><p class="cl-931cae16"><span class="cl-931b0804">0</span></p></td><td class="cl-931cc0cc"><p class="cl-931cae16"><span class="cl-931b0804">0</span></p></td><td class="cl-931cc0cc"><p class="cl-931cae16"><span class="cl-931b0804">0</span></p></td><td class="cl-931cc0cd"><p class="cl-931cae16"><span class="cl-931b0804">1</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-931cc0b9"><p class="cl-931cae16"><span class="cl-931b0804">GDP_log</span></p></td><td class="cl-931cc0ba"><p class="cl-931cae16"><span class="cl-931b0804">3136</span></p></td><td class="cl-931cc0c2"><p class="cl-931cae16"><span class="cl-931b0804">-0.084</span></p></td><td class="cl-931cc0c3"><p class="cl-931cae16"><span class="cl-931b0804">0.255</span></p></td><td class="cl-931cc0c4"><p class="cl-931cae16"><span class="cl-931b0804">-0.539</span></p></td><td class="cl-931cc0cc"><p class="cl-931cae16"><span class="cl-931b0804">-0.243</span></p></td><td class="cl-931cc0cc"><p class="cl-931cae16"><span class="cl-931b0804">0.0379</span></p></td><td class="cl-931cc0cd"><p class="cl-931cae16"><span class="cl-931b0804">0.938</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-931cc0b9"><p class="cl-931cae16"><span class="cl-931b0804">Manuf</span></p></td><td class="cl-931cc0ba"><p class="cl-931cae16"><span class="cl-931b0804">3136</span></p></td><td class="cl-931cc0c2"><p class="cl-931cae16"><span class="cl-931b0804">16.5</span></p></td><td class="cl-931cc0c3"><p class="cl-931cae16"><span class="cl-931b0804">14.1</span></p></td><td class="cl-931cc0c4"><p class="cl-931cae16"><span class="cl-931b0804">0.1</span></p></td><td class="cl-931cc0cc"><p class="cl-931cae16"><span class="cl-931b0804">7.49</span></p></td><td class="cl-931cc0cc"><p class="cl-931cae16"><span class="cl-931b0804">21</span></p></td><td class="cl-931cc0cd"><p class="cl-931cae16"><span class="cl-931b0804">116</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-931cc0b9"><p class="cl-931cae16"><span class="cl-931b0804">Density_log</span></p></td><td class="cl-931cc0ba"><p class="cl-931cae16"><span class="cl-931b0804">3136</span></p></td><td class="cl-931cc0c2"><p class="cl-931cae16"><span class="cl-931b0804">4.85</span></p></td><td class="cl-931cc0c3"><p class="cl-931cae16"><span class="cl-931b0804">1.1</span></p></td><td class="cl-931cc0c4"><p class="cl-931cae16"><span class="cl-931b0804">1.19</span></p></td><td class="cl-931cc0cc"><p class="cl-931cae16"><span class="cl-931b0804">4.24</span></p></td><td class="cl-931cc0cc"><p class="cl-931cae16"><span class="cl-931b0804">5.32</span></p></td><td class="cl-931cc0cd"><p class="cl-931cae16"><span class="cl-931b0804">8.78</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-931cc0d6"><p class="cl-931cae16"><span class="cl-931b0804">edu</span></p></td><td class="cl-931cc0d7"><p class="cl-931cae16"><span class="cl-931b0804">3136</span></p></td><td class="cl-931cc0d8"><p class="cl-931cae16"><span class="cl-931b0804">-1.39</span></p></td><td class="cl-931cc0d9"><p class="cl-931cae16"><span class="cl-931b0804">6.05</span></p></td><td class="cl-931cc0e0"><p class="cl-931cae16"><span class="cl-931b0804">-20.2</span></p></td><td class="cl-931cc0e1"><p class="cl-931cae16"><span class="cl-931b0804">-5.2</span></p></td><td class="cl-931cc0e1"><p class="cl-931cae16"><span class="cl-931b0804">0.9</span></p></td><td class="cl-931cc0e2"><p class="cl-931cae16"><span class="cl-931b0804">26.8</span></p></td></tr></tbody></table></div>
+</div>
+</div>
+<p>Beskrivende statistikk Fitjar</p>
+<p><img src="images/clipboard-1320068803.png" class="img-fluid"></p>
+<section id="sammenligning-beskrivende-statistikk" class="level3">
+<h3 class="anchored" data-anchor-id="sammenligning-beskrivende-statistikk">Sammenligning beskrivende statistikk</h3>
+<p>Vårt datasett har 3136 observasjoner, mens Fitjar (2025) har 2000 for de fleste variablene. Datasettet vårt dekker perioden 2008-2023, mens artikkelens hovedanalyse dekker 2009-2018. Gjennomsnittet for logaritmert BNP er -0,084 i begge tabellene, og utdanningsvariabelen har også et relativt likt gjennomsnitt. Befokningstettheten er noe høyere hoss oss, mens andelen hovedstadsregioner er litt lavere.</p>
+<p>Industrivariabelen skiller seg mest ut, med et stanadardavvik på 14,1 hos oss mot 7,379 i artikkelen. Maksimumsverdien på 116 bør undersøkes dersom variabelen måler en prosentandel. FoU-variablene kan ikke sammenlignes direkte, siden artikkelen bruker logaritmerte verdier. Samlet ligner datasettene på flere områder, men forskjeller i periode, utvalg, og variabelbehandling begrenser sammenlignbarheten.</p>
+</section>
+</section>
+</section>
+<section id="korrelasjonsmatrise-2009" class="level1">
+<h1>Korrelasjonsmatrise 2009</h1>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Velger bare observasjoner fra 2009 og de aktuelle variablene</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>korrelasjon_2009 <span class="ot">&lt;-</span> eu0823 <span class="sc">|&gt;</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(time <span class="sc">==</span> <span class="dv">2009</span>) <span class="sc">|&gt;</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(pub_RD, priv_RD, Capital, GDP_log,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>         Manuf, Density_log, edu) <span class="sc">|&gt;</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  rstatix<span class="sc">::</span><span class="fu">cor_mat</span>() <span class="sc">|&gt;</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  rstatix<span class="sc">::</span><span class="fu">pull_lower_triangle</span>(<span class="at">diag =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Viser resultatet som en tabell</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>flextable<span class="sc">::</span><span class="fu">flextable</span>(korrelasjon_2009) <span class="sc">|&gt;</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>  flextable<span class="sc">::</span><span class="fu">theme_booktabs</span>() <span class="sc">|&gt;</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>  flextable<span class="sc">::</span><span class="fu">autofit</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="tabwid"><style>.cl-9355e1c2{}.cl-9351c60a{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-9353beb0{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-9353cfa4{width:1.083in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-9353cfae{width:0.846in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-9353cfaf{width:0.837in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-9353cfb0{width:0.761in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-9353cfb1{width:0.905in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-9353cfb8{width:0.71in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-9353cfb9{width:0.54in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-9353cfba{width:1.083in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-9353cfc2{width:0.846in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-9353cfc3{width:0.837in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-9353cfc4{width:0.761in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-9353cfcc{width:0.905in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-9353cfcd{width:0.71in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-9353cfce{width:0.54in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-9353cfcf{width:1.083in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-9353cfd6{width:0.846in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-9353cfd7{width:0.837in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-9353cfd8{width:0.761in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-9353cfe0{width:0.905in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-9353cfe1{width:0.71in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-9353cfe2{width:0.54in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-9355e1c2"><thead><tr style="overflow-wrap:break-word;"><th class="cl-9353cfa4"><p class="cl-9353beb0"><span class="cl-9351c60a">rowname</span></p></th><th class="cl-9353cfae"><p class="cl-9353beb0"><span class="cl-9351c60a">pub_RD</span></p></th><th class="cl-9353cfaf"><p class="cl-9353beb0"><span class="cl-9351c60a">priv_RD</span></p></th><th class="cl-9353cfb0"><p class="cl-9353beb0"><span class="cl-9351c60a">Capital</span></p></th><th class="cl-9353cfb1"><p class="cl-9353beb0"><span class="cl-9351c60a">GDP_log</span></p></th><th class="cl-9353cfb8"><p class="cl-9353beb0"><span class="cl-9351c60a">Manuf</span></p></th><th class="cl-9353cfa4"><p class="cl-9353beb0"><span class="cl-9351c60a">Density_log</span></p></th><th class="cl-9353cfb9"><p class="cl-9353beb0"><span class="cl-9351c60a">edu</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-9353cfba"><p class="cl-9353beb0"><span class="cl-9351c60a">pub_RD</span></p></td><td class="cl-9353cfc2"><p class="cl-9353beb0"><span class="cl-9351c60a">1</span></p></td><td class="cl-9353cfc3"><p class="cl-9353beb0"><span class="cl-9351c60a"></span></p></td><td class="cl-9353cfc4"><p class="cl-9353beb0"><span class="cl-9351c60a"></span></p></td><td class="cl-9353cfcc"><p class="cl-9353beb0"><span class="cl-9351c60a"></span></p></td><td class="cl-9353cfcd"><p class="cl-9353beb0"><span class="cl-9351c60a"></span></p></td><td class="cl-9353cfba"><p class="cl-9353beb0"><span class="cl-9351c60a"></span></p></td><td class="cl-9353cfce"><p class="cl-9353beb0"><span class="cl-9351c60a"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-9353cfba"><p class="cl-9353beb0"><span class="cl-9351c60a">priv_RD</span></p></td><td class="cl-9353cfc2"><p class="cl-9353beb0"><span class="cl-9351c60a">0.5</span></p></td><td class="cl-9353cfc3"><p class="cl-9353beb0"><span class="cl-9351c60a">1</span></p></td><td class="cl-9353cfc4"><p class="cl-9353beb0"><span class="cl-9351c60a"></span></p></td><td class="cl-9353cfcc"><p class="cl-9353beb0"><span class="cl-9351c60a"></span></p></td><td class="cl-9353cfcd"><p class="cl-9353beb0"><span class="cl-9351c60a"></span></p></td><td class="cl-9353cfba"><p class="cl-9353beb0"><span class="cl-9351c60a"></span></p></td><td class="cl-9353cfce"><p class="cl-9353beb0"><span class="cl-9351c60a"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-9353cfba"><p class="cl-9353beb0"><span class="cl-9351c60a">Capital</span></p></td><td class="cl-9353cfc2"><p class="cl-9353beb0"><span class="cl-9351c60a">0.32</span></p></td><td class="cl-9353cfc3"><p class="cl-9353beb0"><span class="cl-9351c60a">0.14</span></p></td><td class="cl-9353cfc4"><p class="cl-9353beb0"><span class="cl-9351c60a">1</span></p></td><td class="cl-9353cfcc"><p class="cl-9353beb0"><span class="cl-9351c60a"></span></p></td><td class="cl-9353cfcd"><p class="cl-9353beb0"><span class="cl-9351c60a"></span></p></td><td class="cl-9353cfba"><p class="cl-9353beb0"><span class="cl-9351c60a"></span></p></td><td class="cl-9353cfce"><p class="cl-9353beb0"><span class="cl-9351c60a"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-9353cfba"><p class="cl-9353beb0"><span class="cl-9351c60a">GDP_log</span></p></td><td class="cl-9353cfc2"><p class="cl-9353beb0"><span class="cl-9351c60a">0.26</span></p></td><td class="cl-9353cfc3"><p class="cl-9353beb0"><span class="cl-9351c60a">0.28</span></p></td><td class="cl-9353cfc4"><p class="cl-9353beb0"><span class="cl-9351c60a">0.66</span></p></td><td class="cl-9353cfcc"><p class="cl-9353beb0"><span class="cl-9351c60a">1</span></p></td><td class="cl-9353cfcd"><p class="cl-9353beb0"><span class="cl-9351c60a"></span></p></td><td class="cl-9353cfba"><p class="cl-9353beb0"><span class="cl-9351c60a"></span></p></td><td class="cl-9353cfce"><p class="cl-9353beb0"><span class="cl-9351c60a"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-9353cfba"><p class="cl-9353beb0"><span class="cl-9351c60a">Manuf</span></p></td><td class="cl-9353cfc2"><p class="cl-9353beb0"><span class="cl-9351c60a">-0.0053</span></p></td><td class="cl-9353cfc3"><p class="cl-9353beb0"><span class="cl-9351c60a">0.2</span></p></td><td class="cl-9353cfc4"><p class="cl-9353beb0"><span class="cl-9351c60a">0.0011</span></p></td><td class="cl-9353cfcc"><p class="cl-9353beb0"><span class="cl-9351c60a">0.22</span></p></td><td class="cl-9353cfcd"><p class="cl-9353beb0"><span class="cl-9351c60a">1</span></p></td><td class="cl-9353cfba"><p class="cl-9353beb0"><span class="cl-9351c60a"></span></p></td><td class="cl-9353cfce"><p class="cl-9353beb0"><span class="cl-9351c60a"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-9353cfba"><p class="cl-9353beb0"><span class="cl-9351c60a">Density_log</span></p></td><td class="cl-9353cfc2"><p class="cl-9353beb0"><span class="cl-9351c60a">0.25</span></p></td><td class="cl-9353cfc3"><p class="cl-9353beb0"><span class="cl-9351c60a">0.14</span></p></td><td class="cl-9353cfc4"><p class="cl-9353beb0"><span class="cl-9351c60a">0.45</span></p></td><td class="cl-9353cfcc"><p class="cl-9353beb0"><span class="cl-9351c60a">0.46</span></p></td><td class="cl-9353cfcd"><p class="cl-9353beb0"><span class="cl-9351c60a">0.31</span></p></td><td class="cl-9353cfba"><p class="cl-9353beb0"><span class="cl-9351c60a">1</span></p></td><td class="cl-9353cfce"><p class="cl-9353beb0"><span class="cl-9351c60a"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-9353cfcf"><p class="cl-9353beb0"><span class="cl-9351c60a">edu</span></p></td><td class="cl-9353cfd6"><p class="cl-9353beb0"><span class="cl-9351c60a">0.42</span></p></td><td class="cl-9353cfd7"><p class="cl-9353beb0"><span class="cl-9351c60a">0.25</span></p></td><td class="cl-9353cfd8"><p class="cl-9353beb0"><span class="cl-9351c60a">0.64</span></p></td><td class="cl-9353cfe0"><p class="cl-9353beb0"><span class="cl-9351c60a">0.62</span></p></td><td class="cl-9353cfe1"><p class="cl-9353beb0"><span class="cl-9351c60a">0.16</span></p></td><td class="cl-9353cfcf"><p class="cl-9353beb0"><span class="cl-9351c60a">0.44</span></p></td><td class="cl-9353cfe2"><p class="cl-9353beb0"><span class="cl-9351c60a">1</span></p></td></tr></tbody></table></div>
+</div>
+</div>
+<p>Korrelasjonsmatrise Fitjar</p>
+<p><img src="images/clipboard-1113045895.png" class="img-fluid"></p>
+<section id="sammenligning-korrelasjonsmatrise-2009" class="level2">
+<h2 class="anchored" data-anchor-id="sammenligning-korrelasjonsmatrise-2009">Sammenligning korrelasjonsmatrise 2009</h2>
+<p>Korrelasjonsmatrisen vår viser flere likheter med tabell A5 i Fitjar (2025). Korrelasjonen mellom offentlig og privat FoU er 0,50 hos oss mot 0,52 i artikkelen. Sammenhengen mellom hovedstadregion og BNP er også relativt lik, med 0,66 hos oss mot 0,65 i artikkelen. Utdanning er positivt korrelert med BNP i begge datasettene, men sammenhengen er noe svakere hos oss med 0,62 mot 0,69 i artikkelen.</p>
+<p>Industrivariabelen viser tydelige foskjeller. Korrelasjonen med offentlig FoU er omtrent 0 hos oss mot -0,44 i artikkelen. Sammenhengene med BNP, utdanning og befolkningstetthet er positive hos oss og nagative i artikkelem. Forskjellene kan ha sammenheng med at industrivariabelen har ulik fordeling i datasttene. Samlet samsvarer flere av sammenhengene godt, men særlig industrivariabelen skiller seg ut. Artikkelens bruk av logaritmerte FoU-variabler begrenser også den direkte sammenlignbarheten.</p>
+</section>
+</section>
+<section id="sammenligning-korrelasjonsmatrise-2009-2023-og-2009" class="level1">
+<h1>5) Sammenligning korrelasjonsmatrise 2009-2023 og 2009</h1>
+<section id="korrelasjonsmatrise-fra-2008-2023" class="level2">
+<h2 class="anchored" data-anchor-id="korrelasjonsmatrise-fra-2008-2023">Korrelasjonsmatrise fra 2008-2023</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Velger perioden og variablene</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>korrelasjon_alle <span class="ot">&lt;-</span> eu0823 <span class="sc">|&gt;</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(time <span class="sc">&gt;=</span> <span class="dv">2008</span>, time <span class="sc">&lt;=</span> <span class="dv">2023</span>) <span class="sc">|&gt;</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(pub_RD, priv_RD, Capital, GDP_log,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>         Manuf, Density_log, edu) <span class="sc">|&gt;</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  rstatix<span class="sc">::</span><span class="fu">cor_mat</span>() <span class="sc">|&gt;</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  rstatix<span class="sc">::</span><span class="fu">pull_lower_triangle</span>(<span class="at">diag =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Viser korrelasjonsmatrisen som en tabell</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>flextable<span class="sc">::</span><span class="fu">flextable</span>(korrelasjon_alle) <span class="sc">|&gt;</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>  flextable<span class="sc">::</span><span class="fu">theme_booktabs</span>() <span class="sc">|&gt;</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  flextable<span class="sc">::</span><span class="fu">autofit</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="tabwid"><style>.cl-938e935a{}.cl-938ab56e{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-938c44b0{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-938c5748{width:1.083in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-938c5749{width:0.846in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-938c5752{width:0.837in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-938c5753{width:0.761in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-938c5754{width:0.905in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-938c575c{width:0.71in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-938c575d{width:0.54in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-938c575e{width:1.083in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-938c5766{width:0.846in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-938c5767{width:0.837in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-938c5768{width:0.761in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-938c5770{width:0.905in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-938c5771{width:0.71in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-938c5772{width:0.54in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-938c577a{width:1.083in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-938c577b{width:0.846in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-938c577c{width:0.837in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-938c577d{width:0.761in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-938c5784{width:0.905in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-938c5785{width:0.71in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-938c5786{width:0.54in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-938e935a"><thead><tr style="overflow-wrap:break-word;"><th class="cl-938c5748"><p class="cl-938c44b0"><span class="cl-938ab56e">rowname</span></p></th><th class="cl-938c5749"><p class="cl-938c44b0"><span class="cl-938ab56e">pub_RD</span></p></th><th class="cl-938c5752"><p class="cl-938c44b0"><span class="cl-938ab56e">priv_RD</span></p></th><th class="cl-938c5753"><p class="cl-938c44b0"><span class="cl-938ab56e">Capital</span></p></th><th class="cl-938c5754"><p class="cl-938c44b0"><span class="cl-938ab56e">GDP_log</span></p></th><th class="cl-938c575c"><p class="cl-938c44b0"><span class="cl-938ab56e">Manuf</span></p></th><th class="cl-938c5748"><p class="cl-938c44b0"><span class="cl-938ab56e">Density_log</span></p></th><th class="cl-938c575d"><p class="cl-938c44b0"><span class="cl-938ab56e">edu</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-938c575e"><p class="cl-938c44b0"><span class="cl-938ab56e">pub_RD</span></p></td><td class="cl-938c5766"><p class="cl-938c44b0"><span class="cl-938ab56e">1</span></p></td><td class="cl-938c5767"><p class="cl-938c44b0"><span class="cl-938ab56e"></span></p></td><td class="cl-938c5768"><p class="cl-938c44b0"><span class="cl-938ab56e"></span></p></td><td class="cl-938c5770"><p class="cl-938c44b0"><span class="cl-938ab56e"></span></p></td><td class="cl-938c5771"><p class="cl-938c44b0"><span class="cl-938ab56e"></span></p></td><td class="cl-938c575e"><p class="cl-938c44b0"><span class="cl-938ab56e"></span></p></td><td class="cl-938c5772"><p class="cl-938c44b0"><span class="cl-938ab56e"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-938c575e"><p class="cl-938c44b0"><span class="cl-938ab56e">priv_RD</span></p></td><td class="cl-938c5766"><p class="cl-938c44b0"><span class="cl-938ab56e">0.41</span></p></td><td class="cl-938c5767"><p class="cl-938c44b0"><span class="cl-938ab56e">1</span></p></td><td class="cl-938c5768"><p class="cl-938c44b0"><span class="cl-938ab56e"></span></p></td><td class="cl-938c5770"><p class="cl-938c44b0"><span class="cl-938ab56e"></span></p></td><td class="cl-938c5771"><p class="cl-938c44b0"><span class="cl-938ab56e"></span></p></td><td class="cl-938c575e"><p class="cl-938c44b0"><span class="cl-938ab56e"></span></p></td><td class="cl-938c5772"><p class="cl-938c44b0"><span class="cl-938ab56e"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-938c575e"><p class="cl-938c44b0"><span class="cl-938ab56e">Capital</span></p></td><td class="cl-938c5766"><p class="cl-938c44b0"><span class="cl-938ab56e">0.28</span></p></td><td class="cl-938c5767"><p class="cl-938c44b0"><span class="cl-938ab56e">0.15</span></p></td><td class="cl-938c5768"><p class="cl-938c44b0"><span class="cl-938ab56e">1</span></p></td><td class="cl-938c5770"><p class="cl-938c44b0"><span class="cl-938ab56e"></span></p></td><td class="cl-938c5771"><p class="cl-938c44b0"><span class="cl-938ab56e"></span></p></td><td class="cl-938c575e"><p class="cl-938c44b0"><span class="cl-938ab56e"></span></p></td><td class="cl-938c5772"><p class="cl-938c44b0"><span class="cl-938ab56e"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-938c575e"><p class="cl-938c44b0"><span class="cl-938ab56e">GDP_log</span></p></td><td class="cl-938c5766"><p class="cl-938c44b0"><span class="cl-938ab56e">0.22</span></p></td><td class="cl-938c5767"><p class="cl-938c44b0"><span class="cl-938ab56e">0.34</span></p></td><td class="cl-938c5768"><p class="cl-938c44b0"><span class="cl-938ab56e">0.64</span></p></td><td class="cl-938c5770"><p class="cl-938c44b0"><span class="cl-938ab56e">1</span></p></td><td class="cl-938c5771"><p class="cl-938c44b0"><span class="cl-938ab56e"></span></p></td><td class="cl-938c575e"><p class="cl-938c44b0"><span class="cl-938ab56e"></span></p></td><td class="cl-938c5772"><p class="cl-938c44b0"><span class="cl-938ab56e"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-938c575e"><p class="cl-938c44b0"><span class="cl-938ab56e">Manuf</span></p></td><td class="cl-938c5766"><p class="cl-938c44b0"><span class="cl-938ab56e">-0.032</span></p></td><td class="cl-938c5767"><p class="cl-938c44b0"><span class="cl-938ab56e">0.26</span></p></td><td class="cl-938c5768"><p class="cl-938c44b0"><span class="cl-938ab56e">-0.037</span></p></td><td class="cl-938c5770"><p class="cl-938c44b0"><span class="cl-938ab56e">0.22</span></p></td><td class="cl-938c5771"><p class="cl-938c44b0"><span class="cl-938ab56e">1</span></p></td><td class="cl-938c575e"><p class="cl-938c44b0"><span class="cl-938ab56e"></span></p></td><td class="cl-938c5772"><p class="cl-938c44b0"><span class="cl-938ab56e"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-938c575e"><p class="cl-938c44b0"><span class="cl-938ab56e">Density_log</span></p></td><td class="cl-938c5766"><p class="cl-938c44b0"><span class="cl-938ab56e">0.25</span></p></td><td class="cl-938c5767"><p class="cl-938c44b0"><span class="cl-938ab56e">0.19</span></p></td><td class="cl-938c5768"><p class="cl-938c44b0"><span class="cl-938ab56e">0.45</span></p></td><td class="cl-938c5770"><p class="cl-938c44b0"><span class="cl-938ab56e">0.43</span></p></td><td class="cl-938c5771"><p class="cl-938c44b0"><span class="cl-938ab56e">0.3</span></p></td><td class="cl-938c575e"><p class="cl-938c44b0"><span class="cl-938ab56e">1</span></p></td><td class="cl-938c5772"><p class="cl-938c44b0"><span class="cl-938ab56e"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-938c577a"><p class="cl-938c44b0"><span class="cl-938ab56e">edu</span></p></td><td class="cl-938c577b"><p class="cl-938c44b0"><span class="cl-938ab56e">0.38</span></p></td><td class="cl-938c577c"><p class="cl-938c44b0"><span class="cl-938ab56e">0.3</span></p></td><td class="cl-938c577d"><p class="cl-938c44b0"><span class="cl-938ab56e">0.69</span></p></td><td class="cl-938c5784"><p class="cl-938c44b0"><span class="cl-938ab56e">0.72</span></p></td><td class="cl-938c5785"><p class="cl-938c44b0"><span class="cl-938ab56e">0.17</span></p></td><td class="cl-938c577a"><p class="cl-938c44b0"><span class="cl-938ab56e">0.47</span></p></td><td class="cl-938c5786"><p class="cl-938c44b0"><span class="cl-938ab56e">1</span></p></td></tr></tbody></table></div>
+</div>
+</div>
+</section>
+<section id="korrelasjonsmatrise-table-a5-fitjar" class="level2">
+<h2 class="anchored" data-anchor-id="korrelasjonsmatrise-table-a5-fitjar">Korrelasjonsmatrise Table A5 Fitjar</h2>
+<p><img src="images/clipboard-3737378573.png" class="img-fluid"></p>
+</section>
+<section id="sammenligning" class="level2">
+<h2 class="anchored" data-anchor-id="sammenligning">Sammenligning</h2>
+<p>Når vi sammenligner vår korrelasjonsmatrise for 2008-2023 med Fitjar (2025) matrise for 2009 i tabell A.5, finner vi både likheter og forskjeller. Korrelasjonen mellom utdanning og BNP er 0,72 hos oss mot 0,69 hos Fitjar. Dette er nærmere artikkelens verdi enn vår korrelasjon på 0,62 for 2009. Sammenhengen mellom offentlig og privar FoU samsvarer derimot dårligere. Den er 0,41 for hele perioden, sammenlignet med 0,52 hos Fitjar og 0,50 i våre 2009-data. Industrivariabelen har fortsatt flere sammenhenger med motsatt fortegn sammenlignet med artikkelen. Hele perioden gir dermed samsvar for enkelte korrelasjoner, men ikke et entydig bedre samsvar samlet sett.</p>
+</section>
+</section>
+<section id="variablene-gdp-manuf-og-destiny" class="level1">
+<h1>6) Variablene GDP, Manuf og Destiny</h1>
+<p>Variabalen GPD måler regionens BNP per innbygger relativt til landsgjennomsnittet. I analysen brukes den naturlige logariten av dette forholdet. Variabelen viser dermed regionens økonomiske nivå sammenlignet med landet den tilhører.</p>
+<p>Variabelen Manuf måler hvor stor prosentandel av den samlede sysselsettingen i regionen som er innen industriproduksjon. Variabelen beskriver hvor indusripreget regionens næringsstrukttur er.</p>
+<p>Destiny måler befolkningstettheten, altså innbyggere per kvadrarkilometer. I analysen brukes den naturlige logaritmen av befolkningstetthete.</p>
+</section>
+<section id="nuts-2-regioner-gpd-manuf-og-destiny" class="level1">
+<h1>7) NUTS 2 regioner GPD, Manuf og Destiny</h1>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Beregner gjennomsnitt for hver region</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>regionverdier <span class="ot">&lt;-</span> eu0823 <span class="sc">|&gt;</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(geo, name) <span class="sc">|&gt;</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(GDP, Manuf, Density),</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>      <span class="sc">~</span> <span class="fu">mean</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Finner fem høyeste og fem laveste for hver variabel</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>topp_bunn <span class="ot">&lt;-</span> regionverdier <span class="sc">|&gt;</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">c</span>(GDP, Manuf, Density),</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"Variabel"</span>,</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"Verdi"</span></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">is.finite</span>(Verdi)) <span class="sc">|&gt;</span></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Variabel) <span class="sc">|&gt;</span></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_modify</span>(<span class="sc">~</span> <span class="fu">bind_rows</span>(</span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>    .x <span class="sc">|&gt;</span></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>      <span class="fu">slice_max</span>(Verdi, <span class="at">n =</span> <span class="dv">5</span>, <span class="at">with_ties =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">Gruppe =</span> <span class="st">"Høyest"</span>),</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>    .x <span class="sc">|&gt;</span></span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>      <span class="fu">slice_min</span>(Verdi, <span class="at">n =</span> <span class="dv">5</span>, <span class="at">with_ties =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">Gruppe =</span> <span class="st">"Lavest"</span>)</span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">|&gt;</span></span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Variabel, Gruppe, geo, name, Verdi)</span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Viser resultatene</span></span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a>flextable<span class="sc">::</span><span class="fu">flextable</span>(topp_bunn) <span class="sc">|&gt;</span></span>
+<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a>  flextable<span class="sc">::</span><span class="fu">colformat_num</span>(<span class="at">j =</span> <span class="st">"Verdi"</span>, <span class="at">digits =</span> <span class="dv">2</span>) <span class="sc">|&gt;</span></span>
+<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a>  flextable<span class="sc">::</span><span class="fu">autofit</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="tabwid"><style>.cl-93a86dfc{}.cl-93a39d68{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-93a559c8{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-93a559c9{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-93a56bfc{width:0.846in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-93a56bfd{width:0.795in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-93a56bfe{width:0.684in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-93a56c06{width:2.196in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-93a56c07{width:1.305in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-93a56c10{width:0.846in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-93a56c11{width:0.795in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-93a56c12{width:0.684in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-93a56c1a{width:2.196in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-93a56c1b{width:1.305in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-93a56c1c{width:0.846in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-93a56c1d{width:0.795in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-93a56c24{width:0.684in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-93a56c25{width:2.196in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-93a56c26{width:1.305in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-93a86dfc"><thead><tr style="overflow-wrap:break-word;"><th class="cl-93a56bfc"><p class="cl-93a559c8"><span class="cl-93a39d68">Variabel</span></p></th><th class="cl-93a56bfd"><p class="cl-93a559c8"><span class="cl-93a39d68">Gruppe</span></p></th><th class="cl-93a56bfe"><p class="cl-93a559c8"><span class="cl-93a39d68">geo</span></p></th><th class="cl-93a56c06"><p class="cl-93a559c8"><span class="cl-93a39d68">name</span></p></th><th class="cl-93a56c07"><p class="cl-93a559c9"><span class="cl-93a39d68">Verdi</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-93a56c10"><p class="cl-93a559c8"><span class="cl-93a39d68">Density</span></p></td><td class="cl-93a56c11"><p class="cl-93a559c8"><span class="cl-93a39d68">Høyest</span></p></td><td class="cl-93a56c12"><p class="cl-93a559c8"><span class="cl-93a39d68">ES64</span></p></td><td class="cl-93a56c1a"><p class="cl-93a559c8"><span class="cl-93a39d68">Ciudad de Melilla</span></p></td><td class="cl-93a56c1b"><p class="cl-93a559c9"><span class="cl-93a39d68">6,038.4062500</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-93a56c10"><p class="cl-93a559c8"><span class="cl-93a39d68">Density</span></p></td><td class="cl-93a56c11"><p class="cl-93a559c8"><span class="cl-93a39d68">Høyest</span></p></td><td class="cl-93a56c12"><p class="cl-93a559c8"><span class="cl-93a39d68">AT13</span></p></td><td class="cl-93a56c1a"><p class="cl-93a559c8"><span class="cl-93a39d68">Wien</span></p></td><td class="cl-93a56c1b"><p class="cl-93a559c9"><span class="cl-93a39d68">4,605.8125000</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-93a56c10"><p class="cl-93a559c8"><span class="cl-93a39d68">Density</span></p></td><td class="cl-93a56c11"><p class="cl-93a559c8"><span class="cl-93a39d68">Høyest</span></p></td><td class="cl-93a56c12"><p class="cl-93a559c8"><span class="cl-93a39d68">ES63</span></p></td><td class="cl-93a56c1a"><p class="cl-93a559c8"><span class="cl-93a39d68">Ciudad de Ceuta</span></p></td><td class="cl-93a56c1b"><p class="cl-93a559c9"><span class="cl-93a39d68">4,240.6562500</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-93a56c10"><p class="cl-93a559c8"><span class="cl-93a39d68">Density</span></p></td><td class="cl-93a56c11"><p class="cl-93a559c8"><span class="cl-93a39d68">Høyest</span></p></td><td class="cl-93a56c12"><p class="cl-93a559c8"><span class="cl-93a39d68">DE30</span></p></td><td class="cl-93a56c1a"><p class="cl-93a559c8"><span class="cl-93a39d68">Berlin</span></p></td><td class="cl-93a56c1b"><p class="cl-93a559c9"><span class="cl-93a39d68">4,062.1187500</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-93a56c10"><p class="cl-93a559c8"><span class="cl-93a39d68">Density</span></p></td><td class="cl-93a56c11"><p class="cl-93a559c8"><span class="cl-93a39d68">Høyest</span></p></td><td class="cl-93a56c12"><p class="cl-93a559c8"><span class="cl-93a39d68">HU11</span></p></td><td class="cl-93a56c1a"><p class="cl-93a559c8"><span class="cl-93a39d68">Budapest</span></p></td><td class="cl-93a56c1b"><p class="cl-93a559c9"><span class="cl-93a39d68">3,359.5250000</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-93a56c10"><p class="cl-93a559c8"><span class="cl-93a39d68">Density</span></p></td><td class="cl-93a56c11"><p class="cl-93a559c8"><span class="cl-93a39d68">Lavest</span></p></td><td class="cl-93a56c12"><p class="cl-93a559c8"><span class="cl-93a39d68">SE33</span></p></td><td class="cl-93a56c1a"><p class="cl-93a559c8"><span class="cl-93a39d68">Övre Norrland</span></p></td><td class="cl-93a56c1b"><p class="cl-93a559c9"><span class="cl-93a39d68">3.3812500</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-93a56c10"><p class="cl-93a559c8"><span class="cl-93a39d68">Density</span></p></td><td class="cl-93a56c11"><p class="cl-93a559c8"><span class="cl-93a39d68">Lavest</span></p></td><td class="cl-93a56c12"><p class="cl-93a559c8"><span class="cl-93a39d68">SE32</span></p></td><td class="cl-93a56c1a"><p class="cl-93a559c8"><span class="cl-93a39d68">Mellersta Norrland</span></p></td><td class="cl-93a56c1b"><p class="cl-93a559c9"><span class="cl-93a39d68">5.2562500</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-93a56c10"><p class="cl-93a559c8"><span class="cl-93a39d68">Density</span></p></td><td class="cl-93a56c11"><p class="cl-93a559c8"><span class="cl-93a39d68">Lavest</span></p></td><td class="cl-93a56c12"><p class="cl-93a559c8"><span class="cl-93a39d68">FI1D</span></p></td><td class="cl-93a56c1a"><p class="cl-93a559c8"><span class="cl-93a39d68">Pohjois- ja Itä-Suomi</span></p></td><td class="cl-93a56c1b"><p class="cl-93a559c9"><span class="cl-93a39d68">6.3500000</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-93a56c10"><p class="cl-93a559c8"><span class="cl-93a39d68">Density</span></p></td><td class="cl-93a56c11"><p class="cl-93a559c8"><span class="cl-93a39d68">Lavest</span></p></td><td class="cl-93a56c12"><p class="cl-93a559c8"><span class="cl-93a39d68">SE31</span></p></td><td class="cl-93a56c1a"><p class="cl-93a559c8"><span class="cl-93a39d68">Norra Mellansverige</span></p></td><td class="cl-93a56c1b"><p class="cl-93a559c9"><span class="cl-93a39d68">13.2125000</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-93a56c10"><p class="cl-93a559c8"><span class="cl-93a39d68">Density</span></p></td><td class="cl-93a56c11"><p class="cl-93a559c8"><span class="cl-93a39d68">Lavest</span></p></td><td class="cl-93a56c12"><p class="cl-93a559c8"><span class="cl-93a39d68">FI19</span></p></td><td class="cl-93a56c1a"><p class="cl-93a559c8"><span class="cl-93a39d68">Länsi-Suomi</span></p></td><td class="cl-93a56c1b"><p class="cl-93a559c9"><span class="cl-93a39d68">23.5750000</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-93a56c10"><p class="cl-93a559c8"><span class="cl-93a39d68">GDP</span></p></td><td class="cl-93a56c11"><p class="cl-93a559c8"><span class="cl-93a39d68">Høyest</span></p></td><td class="cl-93a56c12"><p class="cl-93a559c8"><span class="cl-93a39d68">SK01</span></p></td><td class="cl-93a56c1a"><p class="cl-93a559c8"><span class="cl-93a39d68">Bratislavský kraj</span></p></td><td class="cl-93a56c1b"><p class="cl-93a559c9"><span class="cl-93a39d68">2.3879959</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-93a56c10"><p class="cl-93a559c8"><span class="cl-93a39d68">GDP</span></p></td><td class="cl-93a56c11"><p class="cl-93a559c8"><span class="cl-93a39d68">Høyest</span></p></td><td class="cl-93a56c12"><p class="cl-93a559c8"><span class="cl-93a39d68">RO32</span></p></td><td class="cl-93a56c1a"><p class="cl-93a559c8"><span class="cl-93a39d68">Bucureşti-Ilfov</span></p></td><td class="cl-93a56c1b"><p class="cl-93a559c9"><span class="cl-93a39d68">2.3258080</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-93a56c10"><p class="cl-93a559c8"><span class="cl-93a39d68">GDP</span></p></td><td class="cl-93a56c11"><p class="cl-93a559c8"><span class="cl-93a39d68">Høyest</span></p></td><td class="cl-93a56c12"><p class="cl-93a559c8"><span class="cl-93a39d68">CZ01</span></p></td><td class="cl-93a56c1a"><p class="cl-93a559c8"><span class="cl-93a39d68">Praha</span></p></td><td class="cl-93a56c1b"><p class="cl-93a559c9"><span class="cl-93a39d68">2.2081531</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-93a56c10"><p class="cl-93a559c8"><span class="cl-93a39d68">GDP</span></p></td><td class="cl-93a56c11"><p class="cl-93a559c8"><span class="cl-93a39d68">Høyest</span></p></td><td class="cl-93a56c12"><p class="cl-93a559c8"><span class="cl-93a39d68">HU11</span></p></td><td class="cl-93a56c1a"><p class="cl-93a559c8"><span class="cl-93a39d68">Budapest</span></p></td><td class="cl-93a56c1b"><p class="cl-93a559c9"><span class="cl-93a39d68">2.1213898</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-93a56c10"><p class="cl-93a559c8"><span class="cl-93a39d68">GDP</span></p></td><td class="cl-93a56c11"><p class="cl-93a559c8"><span class="cl-93a39d68">Høyest</span></p></td><td class="cl-93a56c12"><p class="cl-93a559c8"><span class="cl-93a39d68">PL91</span></p></td><td class="cl-93a56c1a"><p class="cl-93a559c8"><span class="cl-93a39d68">Warszawski stołeczny</span></p></td><td class="cl-93a56c1b"><p class="cl-93a559c9"><span class="cl-93a39d68">2.1022928</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-93a56c10"><p class="cl-93a559c8"><span class="cl-93a39d68">GDP</span></p></td><td class="cl-93a56c11"><p class="cl-93a559c8"><span class="cl-93a39d68">Lavest</span></p></td><td class="cl-93a56c12"><p class="cl-93a559c8"><span class="cl-93a39d68">ITF6</span></p></td><td class="cl-93a56c1a"><p class="cl-93a559c8"><span class="cl-93a39d68">Calabria</span></p></td><td class="cl-93a56c1b"><p class="cl-93a559c9"><span class="cl-93a39d68">0.6036980</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-93a56c10"><p class="cl-93a559c8"><span class="cl-93a39d68">GDP</span></p></td><td class="cl-93a56c11"><p class="cl-93a559c8"><span class="cl-93a39d68">Lavest</span></p></td><td class="cl-93a56c12"><p class="cl-93a559c8"><span class="cl-93a39d68">ITG1</span></p></td><td class="cl-93a56c1a"><p class="cl-93a559c8"><span class="cl-93a39d68">Sicilia</span></p></td><td class="cl-93a56c1b"><p class="cl-93a559c9"><span class="cl-93a39d68">0.6216491</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-93a56c10"><p class="cl-93a559c8"><span class="cl-93a39d68">GDP</span></p></td><td class="cl-93a56c11"><p class="cl-93a559c8"><span class="cl-93a39d68">Lavest</span></p></td><td class="cl-93a56c12"><p class="cl-93a559c8"><span class="cl-93a39d68">RO21</span></p></td><td class="cl-93a56c1a"><p class="cl-93a559c8"><span class="cl-93a39d68">Nord-Est</span></p></td><td class="cl-93a56c1b"><p class="cl-93a559c9"><span class="cl-93a39d68">0.6245508</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-93a56c10"><p class="cl-93a559c8"><span class="cl-93a39d68">GDP</span></p></td><td class="cl-93a56c11"><p class="cl-93a559c8"><span class="cl-93a39d68">Lavest</span></p></td><td class="cl-93a56c12"><p class="cl-93a559c8"><span class="cl-93a39d68">BG31</span></p></td><td class="cl-93a56c1a"><p class="cl-93a559c8"><span class="cl-93a39d68">Severozapaden</span></p></td><td class="cl-93a56c1b"><p class="cl-93a559c9"><span class="cl-93a39d68">0.6313091</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-93a56c10"><p class="cl-93a559c8"><span class="cl-93a39d68">GDP</span></p></td><td class="cl-93a56c11"><p class="cl-93a559c8"><span class="cl-93a39d68">Lavest</span></p></td><td class="cl-93a56c12"><p class="cl-93a559c8"><span class="cl-93a39d68">HU31</span></p></td><td class="cl-93a56c1a"><p class="cl-93a559c8"><span class="cl-93a39d68">Észak-Magyarország</span></p></td><td class="cl-93a56c1b"><p class="cl-93a559c9"><span class="cl-93a39d68">0.6363246</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-93a56c10"><p class="cl-93a559c8"><span class="cl-93a39d68">Manuf</span></p></td><td class="cl-93a56c11"><p class="cl-93a559c8"><span class="cl-93a39d68">Høyest</span></p></td><td class="cl-93a56c12"><p class="cl-93a559c8"><span class="cl-93a39d68">ITC4</span></p></td><td class="cl-93a56c1a"><p class="cl-93a559c8"><span class="cl-93a39d68">Lombardia</span></p></td><td class="cl-93a56c1b"><p class="cl-93a559c9"><span class="cl-93a39d68">112.3956250</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-93a56c10"><p class="cl-93a559c8"><span class="cl-93a39d68">Manuf</span></p></td><td class="cl-93a56c11"><p class="cl-93a559c8"><span class="cl-93a39d68">Høyest</span></p></td><td class="cl-93a56c12"><p class="cl-93a559c8"><span class="cl-93a39d68">DE11</span></p></td><td class="cl-93a56c1a"><p class="cl-93a559c8"><span class="cl-93a39d68">Stuttgart</span></p></td><td class="cl-93a56c1b"><p class="cl-93a559c9"><span class="cl-93a39d68">64.5118750</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-93a56c10"><p class="cl-93a559c8"><span class="cl-93a39d68">Manuf</span></p></td><td class="cl-93a56c11"><p class="cl-93a559c8"><span class="cl-93a39d68">Høyest</span></p></td><td class="cl-93a56c12"><p class="cl-93a559c8"><span class="cl-93a39d68">ES51</span></p></td><td class="cl-93a56c1a"><p class="cl-93a559c8"><span class="cl-93a39d68">Cataluña</span></p></td><td class="cl-93a56c1b"><p class="cl-93a559c9"><span class="cl-93a39d68">60.6906250</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-93a56c10"><p class="cl-93a559c8"><span class="cl-93a39d68">Manuf</span></p></td><td class="cl-93a56c11"><p class="cl-93a559c8"><span class="cl-93a39d68">Høyest</span></p></td><td class="cl-93a56c12"><p class="cl-93a559c8"><span class="cl-93a39d68">ITH3</span></p></td><td class="cl-93a56c1a"><p class="cl-93a559c8"><span class="cl-93a39d68">Veneto</span></p></td><td class="cl-93a56c1b"><p class="cl-93a559c9"><span class="cl-93a39d68">60.0606250</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-93a56c10"><p class="cl-93a559c8"><span class="cl-93a39d68">Manuf</span></p></td><td class="cl-93a56c11"><p class="cl-93a559c8"><span class="cl-93a39d68">Høyest</span></p></td><td class="cl-93a56c12"><p class="cl-93a559c8"><span class="cl-93a39d68">PL22</span></p></td><td class="cl-93a56c1a"><p class="cl-93a559c8"><span class="cl-93a39d68">Śląskie</span></p></td><td class="cl-93a56c1b"><p class="cl-93a559c9"><span class="cl-93a39d68">58.6850000</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-93a56c10"><p class="cl-93a559c8"><span class="cl-93a39d68">Manuf</span></p></td><td class="cl-93a56c11"><p class="cl-93a559c8"><span class="cl-93a39d68">Lavest</span></p></td><td class="cl-93a56c12"><p class="cl-93a559c8"><span class="cl-93a39d68">ES64</span></p></td><td class="cl-93a56c1a"><p class="cl-93a559c8"><span class="cl-93a39d68">Ciudad de Melilla</span></p></td><td class="cl-93a56c1b"><p class="cl-93a559c9"><span class="cl-93a39d68">0.1000000</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-93a56c10"><p class="cl-93a559c8"><span class="cl-93a39d68">Manuf</span></p></td><td class="cl-93a56c11"><p class="cl-93a559c8"><span class="cl-93a39d68">Lavest</span></p></td><td class="cl-93a56c12"><p class="cl-93a559c8"><span class="cl-93a39d68">ES63</span></p></td><td class="cl-93a56c1a"><p class="cl-93a559c8"><span class="cl-93a39d68">Ciudad de Ceuta</span></p></td><td class="cl-93a56c1b"><p class="cl-93a559c9"><span class="cl-93a39d68">0.1173125</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-93a56c10"><p class="cl-93a559c8"><span class="cl-93a39d68">Manuf</span></p></td><td class="cl-93a56c11"><p class="cl-93a559c8"><span class="cl-93a39d68">Lavest</span></p></td><td class="cl-93a56c12"><p class="cl-93a559c8"><span class="cl-93a39d68">EL62</span></p></td><td class="cl-93a56c1a"><p class="cl-93a559c8"><span class="cl-93a39d68">Ionia Nisia</span></p></td><td class="cl-93a56c1b"><p class="cl-93a559c9"><span class="cl-93a39d68">0.4181250</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-93a56c10"><p class="cl-93a559c8"><span class="cl-93a39d68">Manuf</span></p></td><td class="cl-93a56c11"><p class="cl-93a559c8"><span class="cl-93a39d68">Lavest</span></p></td><td class="cl-93a56c12"><p class="cl-93a559c8"><span class="cl-93a39d68">EL41</span></p></td><td class="cl-93a56c1a"><p class="cl-93a559c8"><span class="cl-93a39d68">Voreio Aigaio</span></p></td><td class="cl-93a56c1b"><p class="cl-93a559c9"><span class="cl-93a39d68">0.4400000</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-93a56c1c"><p class="cl-93a559c8"><span class="cl-93a39d68">Manuf</span></p></td><td class="cl-93a56c1d"><p class="cl-93a559c8"><span class="cl-93a39d68">Lavest</span></p></td><td class="cl-93a56c24"><p class="cl-93a559c8"><span class="cl-93a39d68">ITC2</span></p></td><td class="cl-93a56c25"><p class="cl-93a559c8"><span class="cl-93a39d68">Valle d’Aosta/Vallée d’Aoste</span></p></td><td class="cl-93a56c26"><p class="cl-93a559c9"><span class="cl-93a39d68">0.6275000</span></p></td></tr></tbody></table></div>
+</div>
+</div>
+</section>
+<section id="gpd" class="level1">
+<h1>GPD</h1>
+<p>De høyeste verdiene for GDP finnes i hovedstadregioner, mens de laveste finnes i Sør-Italia, nordøstlige Romania og nordvestlige Bulgaria. Dette virkeer rimelig ut fra at hovedstadregioner ofte samler mye økonomisk aktivitet. Variabelen måler BNP per innbygger relativt til eget landsgjennomsnitt. Bratislavský kraj sin verdi på omtrent 2,39 betyr dermed at BNP per inbygger ligger rundt 139 prosent over landsgjennomsnittet. Rangeringen viser derfor ikke nødvendigvis hvilke regioner som er rikest i Europa i absolutte tall.</p>
+<section id="manuf" class="level2">
+<h2 class="anchored" data-anchor-id="manuf">Manuf</h2>
+<p>De høyeste verdiene finnes blant annet i norditalienske regioner og Sluttgart, mens de laveste finnes i mindre by-, øy-, og fjellregioner. Rangeringen kan virke rimelig, men verdiene samsvarer ikke uten videre med artikkelens definisjon av Manuf som prosentandelen sysselsatte innen industriproduskjon. Lombardia har et gjennomsnitt på 112,4 som ikke kan være en prosentandel. Måleenheten og beregningen i datasettet bør derfor undersøkes før tallene tolkes som industriandeler.</p>
+</section>
+<section id="density" class="level2">
+<h2 class="anchored" data-anchor-id="density">Density</h2>
+<p>De høyeste verdiene finnes i avgrensede byregioner, mens de laveste finnnes i større områder i Sverige og Finland. Dette virker rimelig fordi byområder har mange innbyggere på lite areal, mens større nordiske regioner kan ha mye ubebodd areal. Melilla har en gjennomsnitlig befolkningstetthet på 6038 mens Ovre Norrland har omtrent 3,38.</p>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
