@@ -190,6 +190,85 @@ flextable::flextable(topp_bunn) |>
   flextable::autofit()
 ```
 
+
+# 17) Betinget konvergens 
+Fitjar estimerer en betinget konvergensmodell, der veksten i FoU 2009-2023 forkalres med startnivået i 2009 og regionale kjennetegn. Vi estimerer to modeller med vekst i offentlig Fou og tre modeller med vekst i privat Fou som avhengi variabel. Alle modellene har landfaste effekter. 
+
+```{r}
+# Vekst: sum av årlige endringer i log (alle tilgjengelige år)
+eu17 <- eu0823 |>
+  filter(!geo %in% c("EL42", "EL62", "ES63", "ES64", "RO22")) |>
+  mutate(aar = if (inherits(time, "Date")) lubridate::year(time) else as.numeric(time))
+vekst <- eu17 |>
+  arrange(geo, aar) |>
+  group_by(geo) |>
+  mutate(
+    dl_pub  = log(pub_RD)  - dplyr::lag(log(pub_RD)),
+    dl_priv = log(priv_RD) - dplyr::lag(log(priv_RD))
+  ) |>
+  summarise(
+    d_pub_RD  = sum(dl_pub,  na.rm = TRUE),
+    d_priv_RD = sum(dl_priv, na.rm = TRUE),
+    .groups = "drop"
+  )
+```
+```{r}
+# Startverdier i 2009
+start_2009 <- eu17 |>
+  filter(aar == 2009) |>
+  transmute(
+    geo, country,
+    log_pub_RD  = log(pub_RD),
+    log_priv_RD = log(priv_RD),
+    GDP_log, Capital, Manuf, Density_log, edu
+  )
+
+# Slå sammen vekst og startverdier
+cs <- left_join(vekst, start_2009, by = "geo")
+
+cs
+```
+I modell 5 legger vi til en interaksjon mellom log(priv_RD) og log(GDP). Den tester om konvergensen i privat FoU går like raskt i rike og fattige regioner. Er interaksjonen positiv, blir effekten av startnivået svakere  i rike regioner. Da tar fattige regioner med lite FoU igjen raskere. Er den negativ, er det de rike regionene som konvergerer raskest. Oppgaveteksten nevner log Public R&D × log GDP, men vi har fulgt Table 3 i Fitjar, som bruker privat FoU.
+
+```{r}
+# Vekst i offentlig FoU
+mod6_pub1 <- lm(d_pub_RD ~ log_pub_RD + log_priv_RD + GDP_log + Capital +
+                  Manuf + Density_log + country, data = cs)
+mod6_pub2 <- update(mod6_pub1, . ~ . + edu)
+
+# Vekst i privat FoU
+mod6_priv1 <- lm(d_priv_RD ~ log_pub_RD + log_priv_RD + GDP_log + Capital +
+                   Manuf + Density_log + country, data = cs)
+mod6_priv2 <- update(mod6_priv1, . ~ . + edu)
+mod6_priv3 <- update(mod6_priv2, . ~ . + log_priv_RD:GDP_log)
+```
+
+
+```{r}
+#| label: tbl-mod6
+#| tbl-cap: "OLS, vekst i FoU 2009–2023 (betinget konvergens). Tilsvarer Table 3 i Fitjar (2025)."
+modelsummary(
+  list(
+    "(1)" = mod6_pub1, "(2)" = mod6_pub2,
+    "(3)" = mod6_priv1, "(4)" = mod6_priv2, "(5)" = mod6_priv3
+  ),
+  coef_omit = "country",
+  coef_rename = c(
+    "log_pub_RD" = "log(pub_RD)", "log_priv_RD" = "log(priv_RD)",
+    "GDP_log" = "log(GDP)", "Density_log" = "log(Density)",
+    "log_priv_RD:GDP_log" = "log(priv_RD) x log(GDP)"
+  ),
+  statistic = "statistic",
+  stars = c("+" = 0.1, "*" = 0.05, "**" = 0.01, "***" = 0.001),
+  gof_map = c("nobs", "adj.r.squared", "logLik", "F"),
+  notes = "t-verdier i parentes. Kol. 1–2: vekst i offentlig FoU. Kol. 3–5: vekst i privat FoU. Alle modeller har landfaste effekter."
+)
+```
+
+Fitjar finner også at startnivået er negativt og signifikant både for offentlig og privat FoU, så hovedfunnet om betinget konvergens er det samme. Koeffisientene hans er mindre fordi han bruker årlig gjennomsnittlig vekst, mens vi bruker samlet vekst over perioden. Det er likevel noen forskjeller. Fitjar finner at BNP har negativ effekt på veksten i offentlig FoU, mens befolkningstetthet og utdanning har positiv effekt. Hos oss er ingen av disse signifikante. For privat FoU finner Fitjar at industriandel er positiv og signifikant, og at BNP bare er svakt signifikant i én modell. Hos oss er BNP signifikant positiv i alle tre modellene, mens industri ikke er signifikant. Forskjellene kan skyldes at vi bruker en lengre periode (2008–2023 mot 2009–2018), ingen britiske data og at Fitjar måler BNP og utdanning relativt til nasjonalt gjennomsnitt.
+
+# 18) 
+
 # GPD
 
 De høyeste verdiene for GDP finnes i hovedstadregioner, mens de laveste finnes i Sør-Italia, nordøstlige Romania og nordvestlige Bulgaria. Dette virkeer rimelig ut fra at hovedstadregioner ofte samler mye økonomisk aktivitet. Variabelen måler BNP per innbygger relativt til eget landsgjennomsnitt. Bratislavský kraj sin verdi på omtrent 2,39 betyr dermed at BNP per inbygger ligger rundt 139 prosent over landsgjennomsnittet. Rangeringen viser derfor ikke nødvendigvis hvilke regioner som er rikest i Europa i absolutte tall.
