@@ -267,7 +267,31 @@ modelsummary(
 
 Fitjar finner også at startnivået er negativt og signifikant både for offentlig og privat FoU, så hovedfunnet om betinget konvergens er det samme. Koeffisientene hans er mindre fordi han bruker årlig gjennomsnittlig vekst, mens vi bruker samlet vekst over perioden. Det er likevel noen forskjeller. Fitjar finner at BNP har negativ effekt på veksten i offentlig FoU, mens befolkningstetthet og utdanning har positiv effekt. Hos oss er ingen av disse signifikante. For privat FoU finner Fitjar at industriandel er positiv og signifikant, og at BNP bare er svakt signifikant i én modell. Hos oss er BNP signifikant positiv i alle tre modellene, mens industri ikke er signifikant. Forskjellene kan skyldes at vi bruker en lengre periode (2008–2023 mot 2009–2018), ingen britiske data og at Fitjar måler BNP og utdanning relativt til nasjonalt gjennomsnitt.
 
-# 18) 
+# 18) Test for heteroskedastisitet 
+Vi tester da tre modeller for privat FoU for heteroskedastisitet med Whites alterantive test. De kvadreete residualene regresseres på depredikerte verdiene og de predikerte verdiene i andre. H0 er at feilleddet er homoskedastisk. 
+
+```{r}
+# Whites alternative test
+white_alt <- function(mod) {
+  u2   <- resid(mod)^2
+  yhat <- fitted(mod)
+  aux  <- lm(u2 ~ yhat + I(yhat^2))
+  LM   <- nobs(mod) * summary(aux)$r.squared
+  tibble(
+    LM      = LM,
+    p_verdi = pchisq(LM, df = 2, lower.tail = FALSE)
+  )
+}
+
+bind_rows(
+  "Modell (3)" = white_alt(mod6_priv1),
+  "Modell (4)" = white_alt(mod6_priv2),
+  "Modell (5)" = white_alt(mod6_priv3),
+  .id = "Modell"
+) |>
+  mutate(across(where(is.numeric), \(x) round(x, 3)))
+```
+Alle tre modellene har p-verdier under 0,01 (LM mellom 11,6 og 13,3). Vi forkaster derfor H0 om homoskedastisitet. Variansen til feilleddet avhenger av de predikerte verdiene, og det betyr at de vanlige standardfeilene kan være feil. Estimatene er fortsatt forventningsrette, men t-verdiene og signifikansen kan være misvisende. Vi bør derfor bruke robuste standardfeil, noe vi gjør i oppgave 19.
 
 # GPD
 
