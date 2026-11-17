@@ -386,3 +386,45 @@ For å tolke resulatene bruker vi F-testens p-verdi for å undersøke om de pred
 **Alternativ hypotese (H₁):** Minst en av variablene har en sammenheng med de kvadrerte residualene.
 
 Residualplottet viser noe variasjon i spredningen av residualene, men ingen tydelig systematisk endring. Den alternative White-testen gir en p-verdi på 0,3169, som er høyere enn signifikansnivået på 0,05. Vi forkaster derfor ikke nullhypotesen. Testen gir derfor ikke statistisk signifikante tegn til heteroskedastisitet, og det er ikke tydelig behov for robuste standardfeil.
+
+# Beregning av gjennomsnittlig vekst i offentlig FoU
+
+For å undersøke utviklingen i offentlig FoU beregner vi årlig vekst for hver NUTS2-region. Veksten beregnes som differansen mellom logaritmen til offentlig FoU i et bestemt år og året før, ved hjelp av dplyr :: lag( ).
+
+```{r}
+# Beregner årlig vekst
+eu_vekst <- eu0823 |>
+  arrange(geo, time) |>
+  group_by(geo) |>
+  mutate(
+    vekst_pub = log(pub_RD) -
+      log(dplyr::lag(pub_RD))
+  ) |>
+  ungroup()
+
+# Kontrollerer veksten for én region
+eu_vekst |>
+  filter(geo == "AT11") |>
+  select(time, pub_RD, vekst_pub)
+
+```
+
+```{r}
+
+# Beregner gjennomsnittlig vekst
+vekst_region <- eu_vekst |>
+  filter(time >= 2010, time <= 2023) |>
+  group_by(geo) |>
+  summarise(
+    vekst_pub = mean(vekst_pub, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+# Kontrollerer resultatene
+summary(vekst_region$vekst_pub)
+
+```
+
+Deretter beregner vi gjennomsnittlig årlig vekst i offentlig FoU for perioden 2010-2023. Dette gir en gjennomsnittsverdi for hver av de 191 regionene.
+
+Resultatet viser en gjennomsnittlig årlig vekst på omtrent 0,78%. Veksten varierer mellom regionene, fra omtrent -20,4% til 11,8% målt som logaritmiske vekstrater. Dette viser at noen regionr har hatt en nedgang i offentlig FoU, men andre har hatt vekst.
