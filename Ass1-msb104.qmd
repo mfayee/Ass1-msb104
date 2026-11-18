@@ -428,3 +428,71 @@ summary(vekst_region$vekst_pub)
 Deretter beregner vi gjennomsnittlig årlig vekst i offentlig FoU for perioden 2010-2023. Dette gir en gjennomsnittsverdi for hver av de 191 regionene.
 
 Resultatet viser en gjennomsnittlig årlig vekst på omtrent 0,78%. Veksten varierer mellom regionene, fra omtrent -20,4% til 11,8% målt som logaritmiske vekstrater. Dette viser at noen regionr har hatt en nedgang i offentlig FoU, men andre har hatt vekst.
+
+# Regresjonsanalyse av vekst i offentlig FoU
+
+For å undersøke om det finnes beta-konvergens i offentlig FoU, kobler vi gjennomsnittlig årlig vekst fra oppgave 13 sammen med nivået på offentlig FoU i 2009. Dette gjør det mulig å undersøke om regioner med lavere FoU i startåret har hatt høyere vekst i perioden 2010-2023.
+
+```{r}
+# Henter offentlig FoU i startåret 2009
+startverdier <- eu0823 |>
+  filter(time == 2009) |>
+  transmute(
+    geo,
+    country = substr(geo, 1, 2),
+    log_pub_RD = log(pub_RD)
+  )
+
+# Slår sammen startverdier og vekst
+vekst_data <- vekst_region |>
+  left_join(startverdier, by = "geo")
+
+# Kontrollerer antall regioner
+nrow(vekst_data)
+
+```
+
+Deretter estimerer vi to regresjonsmodeller. Den første undersøker sammenhengen mellom offentlig FoU i startåret og den gjennomsnittlige veksten. I den andre modellen inkluderer vi også land for å kontrollere for forskjeller mellom landende.
+
+```{r}
+# Modell 4: Uten landeffekter
+mod3a <- lm(
+  vekst_pub ~ log_pub_RD,
+  data = vekst_data
+)
+
+# Modell 5: Med landeffekter
+mod3b <- lm(
+  vekst_pub ~ log_pub_RD + country,
+  data = vekst_data
+)
+
+```
+
+Resultatene fra de to regresjonene samles i en tabell for å undersøke koeffisentenes fortegn og statistiske signifikans.
+
+```{r}
+# Samler regresjonene i en tabell
+modelsummary::modelsummary(
+  list(
+    "(1)" = mod3a,
+    "(2)" = mod3b
+  ),
+  coef_omit = "^country",
+  statistic = "({statistic})",
+  stars = c(
+    "+" = 0.1,
+    "*" = 0.05,
+    "**" = 0.01,
+    "***" = 0.001
+  ),
+  output = "flextable"
+) |>
+  flextable::theme_booktabs() |>
+  flextable::autofit()
+
+```
+
+Regresjonsanalysen undersøker om regioner med lavere offentlig FoU i 2009 har hatt høyere gjennomsnittlig vekst i perioden 2010-2023. Resultatene viser en negativ og signifikant sammenheng mellom offentlig FoU i startåret og den gjennomsnittlige veksten. I modell 1 er koeffisenten -0,011 (p \< 0,001), mens den i modell 2 er -0,016 (p \< 0,001) når vi kontrollerer for land.
+
+Dette samsvarer med Fitjar (2025), som også finner negative og signifikante koeffisienter på -0,006 og -0,010. Begge analysene viser dermed at regioner med lavere offentlig FoU i utgangspunktet har hatt høyere vekst.
