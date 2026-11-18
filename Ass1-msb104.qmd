@@ -431,7 +431,7 @@ Resultatet viser en gjennomsnittlig årlig vekst på omtrent 0,78%. Veksten vari
 
 # Regresjonsanalyse av vekst i offentlig FoU
 
-For å undersøke om det finnes beta-konvergens i offentlig FoU, kobler vi gjennomsnittlig årlig vekst fra oppgave 13 sammen med nivået på offentlig FoU i 2009. Dette gjør det mulig å undersøke om regioner med lavere FoU i startåret har hatt høyere vekst i perioden 2010-2023.
+I denne oppgaven skal vi undersøke om regioner som starter på et lavt nivå, vokser raskere enn regioner som starter på et høyt nivå. Vi er da nødt til å koble gjennomsnittlig årlig vekst fra oppgave 13 sammen med nivået på offentlig FoU i 2009. Dette gjør det mulig å undersøke om regioner med lavere FoU i startåret har hatt høyere vekst i perioden 2010-2023.
 
 ```{r}
 # Henter offentlig FoU i startåret 2009
@@ -496,3 +496,106 @@ modelsummary::modelsummary(
 Regresjonsanalysen undersøker om regioner med lavere offentlig FoU i 2009 har hatt høyere gjennomsnittlig vekst i perioden 2010-2023. Resultatene viser en negativ og signifikant sammenheng mellom offentlig FoU i startåret og den gjennomsnittlige veksten. I modell 1 er koeffisenten -0,011 (p \< 0,001), mens den i modell 2 er -0,016 (p \< 0,001) når vi kontrollerer for land.
 
 Dette samsvarer med Fitjar (2025), som også finner negative og signifikante koeffisienter på -0,006 og -0,010. Begge analysene viser dermed at regioner med lavere offentlig FoU i utgangspunktet har hatt høyere vekst.
+
+# Regresjonsanayse av vekst i privat FoU
+
+For å undersøke utviklingen i privat FoU beregner vi først den årlige veksten for hver NUTS-region. Dette gjøres ved å ta forskjellen mellom logaritmen til privat FoU i et bestemt år og året før. Vi bruker dplyr::lag( ) for å hente verdien fra tidligere år.
+
+Deretter beregner vi gjennomsnittlig årlig vekst i perioden 2010-2023. Dette gir en vekstverdi for hver region, som vi senere bruker i regresjonsanalysen.
+
+```{r}
+# Beregner årlig vekst i privat FoU
+eu_vekst <- eu_vekst |>
+  arrange(geo, time) |>
+  group_by(geo) |>
+  mutate(
+    vekst_priv = log(priv_RD) -
+      log(dplyr::lag(priv_RD))
+  ) |>
+  ungroup()
+
+# Beregner gjennomsnittlig vekst per region
+vekst_priv_region <- eu_vekst |>
+  filter(time >= 2010, time <= 2023) |>
+  group_by(geo) |>
+  summarise(
+    vekst_priv = mean(vekst_priv, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+# Kontrollerer resultatene
+summary(vekst_priv_region$vekst_priv)
+
+```
+
+For å undersøke om regioner med lavere privat FoU har hatt høyere vekst, trenger vi nivået på privat FoU i startåret 2009. Vi henter derfor verdiene fra 2009 og kobler dem sammen med den gjennomsnittlige veksten for hver region.
+
+Vi får da et datasett som viser hvor my privat FoU hver region hadde i starten av perioden og hvordan den har utviklet seg i årene etterpå.
+
+```{r}
+# Henter privat FoU fra startåret 2009
+start_priv <- eu0823 |>
+  filter(time == 2009) |>
+  transmute(
+    geo,
+    log_priv_RD = log(priv_RD)
+  )
+
+# Legger til privat FoU og veksten i datasettet
+vekst_data <- vekst_data |>
+  left_join(vekst_priv_region, by = "geo") |>
+  left_join(start_priv, by = "geo")
+
+# Kontrollerer antall regioner
+nrow(vekst_data)
+
+```
+
+Vi gjennomfører videre to regresjonsanalyser. Den avhengige variabelen er gjennomsnittlig årlig vekst, mens forklaringsvariabelen er privat FoU i startåret 2009.
+
+Den første modellen undersøker sammenhengen uten å ta henysn til forskjeller mellom land. I den andre modellen inkluderer vi landeeffekter for å undersøke om sammenhengen fortsatt finnes når vi kontrollerer for slike forskjeller.
+
+```{r}
+# Modell 3: Privat FoU uten landeffekter
+mod3aPriv <- lm(
+  vekst_priv ~ log_priv_RD,
+  data = vekst_data
+)
+
+# Modell 4: Privat FoU med landeffekter
+mod3bPriv <- lm(
+  vekst_priv ~ log_priv_RD + country,
+  data = vekst_data
+)
+
+```
+
+Resultatene fra de fire regresjonsmodellene samles i en tabell ved hjelp av modelsummary( ). Dette gjør det mulig å sammenligne utviklingen i offentlig og privat FoU, både med og uten landeffekter.
+
+```{r}
+# Samler offentlig og privat FoU i én tabell
+modelsummary::modelsummary(
+  list(
+    "Offentlig (1)" = mod3a,
+    "Offentlig (2)" = mod3b,
+    "Privat (3)" = mod3aPriv,
+    "Privat (4)" = mod3bPriv
+  ),
+  coef_omit = "^country",
+  statistic = "({statistic})",
+  stars = c(
+    "+" = 0.1,
+    "*" = 0.05,
+    "**" = 0.01,
+    "***" = 0.001
+  ),
+  output = "flextable"
+) |>
+  flextable::theme_booktabs() |>
+  flextable::autofit()
+
+```
+
+Regresjonsresultatene viser en negativ og signifikant sammenheng mellom privat FoU i startåret og gjennomsnittlig årlig vekst. I modell 3 er koeffisenten -0,031, mens i modell 4 er -0,018 når vi kontroller for land.
+
+Resultatene samsvarer med Fitjar (2025), som også finner negative og signifikante koeffisenter på -0,018 og 0,010. Dette viser at regioner med lavere privat FoU har hatt høyere vekst.
