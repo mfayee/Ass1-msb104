@@ -14,11 +14,11 @@ format:
     toc-depth: 3
     code-fold: false
     code-tools: true
-    number-sections: true
+    number-sections: false
   
   typst:
     toc: true
-    number-sections: true
+    number-sections: false
 
 execute:
   warning: false
@@ -27,7 +27,6 @@ execute:
 abstract: (kort sammendrag)
 ---
 
-## 
 
 ```{r}
 library(tidyverse)
@@ -187,7 +186,7 @@ regionverdier <- eu0823 |>
     .groups = "drop"
   )
 
-# Finner fem høyeste og fem laveste for hver variabel
+# Finner fem h\u00f8yest og fem laveste for hver variabel
 topp_bunn <- regionverdier |>
   pivot_longer(
     cols = c(GDP, Manuf, Density),
@@ -199,7 +198,7 @@ topp_bunn <- regionverdier |>
   group_modify(~ bind_rows(
     .x |>
       slice_max(Verdi, n = 5, with_ties = FALSE) |>
-      mutate(Gruppe = "Høyest"),
+      mutate(Gruppe = "H\u00f8yest"),
     .x |>
       slice_min(Verdi, n = 5, with_ties = FALSE) |>
       mutate(Gruppe = "Lavest")
@@ -213,134 +212,6 @@ flextable::flextable(topp_bunn) |>
   flextable::autofit()
 ```
 
-
-# 17) Betinget konvergens 
-Fitjar estimerer en betinget konvergensmodell, der veksten i FoU 2009-2023 forkalres med startnivået i 2009 og regionale kjennetegn. Vi estimerer to modeller med vekst i offentlig Fou og tre modeller med vekst i privat Fou som avhengi variabel. Alle modellene har landfaste effekter. 
-
-```{r}
-# Vekst: sum av årlige endringer i log (alle tilgjengelige år)
-eu17 <- eu0823 |>
-  filter(!geo %in% c("EL42", "EL62", "ES63", "ES64", "RO22")) |>
-  mutate(aar = if (inherits(time, "Date")) lubridate::year(time) else as.numeric(time))
-vekst <- eu17 |>
-  arrange(geo, aar) |>
-  group_by(geo) |>
-  mutate(
-    dl_pub  = log(pub_RD)  - dplyr::lag(log(pub_RD)),
-    dl_priv = log(priv_RD) - dplyr::lag(log(priv_RD))
-  ) |>
-  summarise(
-    d_pub_RD  = sum(dl_pub,  na.rm = TRUE),
-    d_priv_RD = sum(dl_priv, na.rm = TRUE),
-    .groups = "drop"
-  )
-```
-```{r}
-# Startverdier i 2009
-start_2009 <- eu17 |>
-  filter(aar == 2009) |>
-  transmute(
-    geo, country,
-    log_pub_RD  = log(pub_RD),
-    log_priv_RD = log(priv_RD),
-    GDP_log, Capital, Manuf, Density_log, edu
-  )
-
-# Slå sammen vekst og startverdier
-cs <- left_join(vekst, start_2009, by = "geo")
-
-cs
-```
-I modell 5 legger vi til en interaksjon mellom log(priv_RD) og log(GDP). Den tester om konvergensen i privat FoU går like raskt i rike og fattige regioner. Er interaksjonen positiv, blir effekten av startnivået svakere  i rike regioner. Da tar fattige regioner med lite FoU igjen raskere. Er den negativ, er det de rike regionene som konvergerer raskest. Oppgaveteksten nevner log Public R&D × log GDP, men vi har fulgt Table 3 i Fitjar, som bruker privat FoU.
-
-```{r}
-# Vekst i offentlig FoU
-mod6_pub1 <- lm(d_pub_RD ~ log_pub_RD + log_priv_RD + GDP_log + Capital +
-                  Manuf + Density_log + country, data = cs)
-mod6_pub2 <- update(mod6_pub1, . ~ . + edu)
-
-# Vekst i privat FoU
-mod6_priv1 <- lm(d_priv_RD ~ log_pub_RD + log_priv_RD + GDP_log + Capital +
-                   Manuf + Density_log + country, data = cs)
-mod6_priv2 <- update(mod6_priv1, . ~ . + edu)
-mod6_priv3 <- update(mod6_priv2, . ~ . + log_priv_RD:GDP_log)
-```
-
-
-```{r}
-#| label: tbl-mod6
-#| tbl-cap: "OLS, vekst i FoU 2009–2023 (betinget konvergens). Tilsvarer Table 3 i Fitjar (2025)."
-modelsummary(
-  list(
-    "(1)" = mod6_pub1, "(2)" = mod6_pub2,
-    "(3)" = mod6_priv1, "(4)" = mod6_priv2, "(5)" = mod6_priv3
-  ),
-  coef_omit = "country",
-  coef_rename = c(
-    "log_pub_RD" = "log(pub_RD)", "log_priv_RD" = "log(priv_RD)",
-    "GDP_log" = "log(GDP)", "Density_log" = "log(Density)",
-    "log_priv_RD:GDP_log" = "log(priv_RD) x log(GDP)"
-  ),
-  statistic = "statistic",
-  stars = c("+" = 0.1, "*" = 0.05, "**" = 0.01, "***" = 0.001),
-  gof_map = c("nobs", "adj.r.squared", "logLik", "F"),
-  notes = "t-verdier i parentes. Kol. 1–2: vekst i offentlig FoU. Kol. 3–5: vekst i privat FoU. Alle modeller har landfaste effekter."
-)
-```
-
-Fitjar finner også at startnivået er negativt og signifikant både for offentlig og privat FoU, så hovedfunnet om betinget konvergens er det samme. Koeffisientene hans er mindre fordi han bruker årlig gjennomsnittlig vekst, mens vi bruker samlet vekst over perioden. Det er likevel noen forskjeller. Fitjar finner at BNP har negativ effekt på veksten i offentlig FoU, mens befolkningstetthet og utdanning har positiv effekt. Hos oss er ingen av disse signifikante. For privat FoU finner Fitjar at industriandel er positiv og signifikant, og at BNP bare er svakt signifikant i én modell. Hos oss er BNP signifikant positiv i alle tre modellene, mens industri ikke er signifikant. Forskjellene kan skyldes at vi bruker en lengre periode (2008–2023 mot 2009–2018), ingen britiske data og at Fitjar måler BNP og utdanning relativt til nasjonalt gjennomsnitt.
-
-# 18) Test for heteroskedastisitet 
-Vi tester da tre modeller for privat FoU for heteroskedastisitet med Whites alterantive test. De kvadreete residualene regresseres på depredikerte verdiene og de predikerte verdiene i andre. H0 er at feilleddet er homoskedastisk. 
-
-```{r}
-# Whites alternative test
-white_alt <- function(mod) {
-  u2   <- resid(mod)^2
-  yhat <- fitted(mod)
-  aux  <- lm(u2 ~ yhat + I(yhat^2))
-  LM   <- nobs(mod) * summary(aux)$r.squared
-  tibble(
-    LM      = LM,
-    p_verdi = pchisq(LM, df = 2, lower.tail = FALSE)
-  )
-}
-
-bind_rows(
-  "Modell (3)" = white_alt(mod6_priv1),
-  "Modell (4)" = white_alt(mod6_priv2),
-  "Modell (5)" = white_alt(mod6_priv3),
-  .id = "Modell"
-) |>
-  mutate(across(where(is.numeric), \(x) round(x, 3)))
-```
-Alle tre modellene har p-verdier under 0,01 (LM mellom 11,6 og 13,3). Vi forkaster derfor H0 om homoskedastisitet. Variansen til feilleddet avhenger av de predikerte verdiene, og det betyr at de vanlige standardfeilene kan være feil. Estimatene er fortsatt forventningsrette, men t-verdiene og signifikansen kan være misvisende. Vi bør derfor bruke robuste standardfeil, noe vi gjør i oppgave 19.
-
-# 19) Robuste standardfeil 
-Siden testen i oppgave 18 viste heteroskedastisitet, estimerer vi modellene fra oppgave 17 på nytt med robuste standardfeil (HC3). 
-
-```{r}
-#| label: tbl-mod6-robust
-#| tbl-cap: "OLS, vekst i FoU 2009-2023 med robuste standardfeil (HC3)."
-modelsummary(
-  list(
-    "(1)" = mod6_pub1, "(2)" = mod6_pub2,
-    "(3)" = mod6_priv1, "(4)" = mod6_priv2, "(5)" = mod6_priv3
-  ),
-  vcov = "HC3",
-  coef_omit = "country",
-  coef_rename = c(
-    "log_pub_RD" = "log(pub_RD)", "log_priv_RD" = "log(priv_RD)",
-    "GDP_log" = "log(GDP)", "Density_log" = "log(Density)",
-    "log_priv_RD:GDP_log" = "log(priv_RD) x log(GDP)"
-  ),
-  statistic = "statistic",
-  stars = c("+" = 0.1, "*" = 0.05, "**" = 0.01, "***" = 0.001),
-  gof_map = c("nobs", "adj.r.squared", "logLik", "F"),
-  notes = "Robuste t-verdier (HC3) i parentes. Alle modeller har landfaste effekter."
-)
-```
-Robuste standardfeil endrer bare t-verdiene, ikke estimatene. De fleste t-verdiene blir litt mindre, men hovedfunnene står seg. Startnivået er fortsatt negativt og signifikant for både offentlig og privat FoU, og log(GDP) er fortsatt positiv og signifikant i modellene for privat FoU. Det eneste som endres er de svake resultatene: log(priv_RD) i modell 2 er ikke lenger signifikant på 10 %-nivå. Konklusjonene endres altså ikke, noe som gjør resultatene mer troverdige. Fitjar bruker også robuste standardfeil i sine analyser.
 
 # GPD
 
@@ -392,7 +263,7 @@ eu0823 <- eu0823 |>
 
 Det kan være fornuftlig å utelate regionene dersom de har særtrekk eller peroblemer med datakvaliteten som gjør dem lite sammenlignbare med resten av regionene. Samtidig er lave eller høye verdier ikke alene en god nok begrunnelse til å fjerne observasjoner siden de kan gjenspeile reelle regionale forskjeller. Utelatelsen reduserer også den geografiske dekningen og kan påvirke resultatet. Valget bør derfor begrunnes ut fra regionenes egenskaper og datakvalitet, og helst vurderes med å sammenligne analysen både med og uten disse regionene.
 
-# Modell 2: Regresjonsanalyse
+# 11) Modell 2: Regresjonsanalyse
 
 For å undersøke hvilke faktorer som henger sammen med offentlige FoU, beregner vi gjennomsnittsverdier for hver NUTS2-region i perioden 2008-2023. Etter at fem regioner er fjernet i oppgave 10, består datasettet av 191 regioner.
 
@@ -478,7 +349,7 @@ I modell 4 har privat FoU en positiv koeffisient på 0,133, som er signifikant p
 
 Resulatene samsvarer på flere omrdåer med Fitjar (2025). Begge analysene finner en negativ og signifikant sammenheng mellom BNP og offentlig FoU i den siste modellen, mens utdanning har en positiv og signifikant sammenheng. Privat FoU og industri er derimot signifikante hos Fitjar. Funnene støtter dermed delvis konklusjonen om at regioner med mye ressurser får mer offentlig FoU.
 
-# Vurdering av robuste standardfeil 
+# 12) Vurdering av robuste standardfeil
 
 For å undersøke om vi bør bruke robuste standardfeil, ser vi på residualplottet fra modell 7 og gjennomfører en alternativ White-test. Testen brukes for å undersøke om det er tegn til heteroskedastisitet i modellen.
 
@@ -516,7 +387,7 @@ For å tolke resulatene bruker vi F-testens p-verdi for å undersøke om de pred
 
 Residualplottet viser noe variasjon i spredningen av residualene, men ingen tydelig systematisk endring. Den alternative White-testen gir en p-verdi på 0,3169, som er høyere enn signifikansnivået på 0,05. Vi forkaster derfor ikke nullhypotesen. Testen gir derfor ikke statistisk signifikante tegn til heteroskedastisitet, og det er ikke tydelig behov for robuste standardfeil.
 
-# Beregning av gjennomsnittlig vekst i offentlig FoU
+# 13) Beregning av gjennomsnittlig vekst i offentlig FoU
 
 For å undersøke utviklingen i offentlig FoU beregner vi årlig vekst for hver NUTS2-region. Veksten beregnes som differansen mellom logaritmen til offentlig FoU i et bestemt år og året før, ved hjelp av dplyr :: lag( ).
 
@@ -539,13 +410,11 @@ eu_vekst |>
 ```
 
 ```{r}
-
-# Beregner gjennomsnittlig vekst
+# Beregner samlet vekst per region
 vekst_region <- eu_vekst |>
-  filter(time >= 2010, time <= 2023) |>
   group_by(geo) |>
   summarise(
-    vekst_pub = mean(vekst_pub, na.rm = TRUE),
+    vekst_pub = sum(vekst_pub, na.rm = TRUE),
     .groups = "drop"
   )
 
@@ -558,7 +427,7 @@ Deretter beregner vi gjennomsnittlig årlig vekst i offentlig FoU for perioden 2
 
 Resultatet viser en gjennomsnittlig årlig vekst på omtrent 0,78%. Veksten varierer mellom regionene, fra omtrent -20,4% til 11,8% målt som logaritmiske vekstrater. Dette viser at noen regionr har hatt en nedgang i offentlig FoU, men andre har hatt vekst.
 
-# Regresjonsanalyse av vekst i offentlig FoU
+# 14) Regresjonsanalyse av vekst i offentlig FoU
 
 I denne oppgaven skal vi undersøke om regioner som starter på et lavt nivå, vokser raskere enn regioner som starter på et høyt nivå. Vi er da nødt til å koble gjennomsnittlig årlig vekst fra oppgave 13 sammen med nivået på offentlig FoU i 2009. Dette gjør det mulig å undersøke om regioner med lavere FoU i startåret har hatt høyere vekst i perioden 2010-2023.
 
@@ -622,11 +491,11 @@ modelsummary::modelsummary(
 
 ```
 
-Regresjonsanalysen undersøker om regioner med lavere offentlig FoU i 2009 har hatt høyere gjennomsnittlig vekst i perioden 2010-2023. Resultatene viser en negativ og signifikant sammenheng mellom offentlig FoU i startåret og den gjennomsnittlige veksten. I modell 1 er koeffisenten -0,011 (p \< 0,001), mens den i modell 2 er -0,016 (p \< 0,001) når vi kontrollerer for land.
+Regresjonsanalysen undersøker om regioner med lavere offentlig FoU i 2009 har hatt høyere samlet vekst i perioden 2008-2023. Resultatene viser en negativ og signifikant sammenheng mellom offentlig FoU i startåret og den gjennomsnittlige veksten. I modell 1 er koeffisenten -0,011 (p \< 0,001), mens den i modell 2 er -0,016 (p \< 0,001) når vi kontrollerer for land.
 
 Dette samsvarer med Fitjar (2025), som også finner negative og signifikante koeffisienter på -0,006 og -0,010. Begge analysene viser dermed at regioner med lavere offentlig FoU i utgangspunktet har hatt høyere vekst.
 
-# Regresjonsanayse av vekst i privat FoU
+# 15) Regresjonsanayse av vekst i privat FoU
 
 For å undersøke utviklingen i privat FoU beregner vi først den årlige veksten for hver NUTS-region. Dette gjøres ved å ta forskjellen mellom logaritmen til privat FoU i et bestemt år og året før. Vi bruker dplyr::lag( ) for å hente verdien fra tidligere år.
 
@@ -643,12 +512,11 @@ eu_vekst <- eu_vekst |>
   ) |>
   ungroup()
 
-# Beregner gjennomsnittlig vekst per region
+# Beregner samlet vekst per region
 vekst_priv_region <- eu_vekst |>
-  filter(time >= 2010, time <= 2023) |>
   group_by(geo) |>
   summarise(
-    vekst_priv = mean(vekst_priv, na.rm = TRUE),
+    vekst_priv = sum(vekst_priv, na.rm = TRUE),
     .groups = "drop"
   )
 
@@ -701,6 +569,9 @@ mod3bPriv <- lm(
 
 Resultatene fra de fire regresjonsmodellene samles i en tabell ved hjelp av modelsummary( ). Dette gjør det mulig å sammenligne utviklingen i offentlig og privat FoU, både med og uten landeffekter.
 
+
+# 16) Ubetinget konvergens 
+
 ```{r}
 # Samler offentlig og privat FoU i én tabell
 modelsummary::modelsummary(
@@ -711,6 +582,7 @@ modelsummary::modelsummary(
     "Privat (4)" = mod3bPriv
   ),
   coef_omit = "^country",
+  gof_map = c("nobs", "r.squared"),
   statistic = "({statistic})",
   stars = c(
     "+" = 0.1,
@@ -725,6 +597,153 @@ modelsummary::modelsummary(
 
 ```
 
-Regresjonsresultatene viser en negativ og signifikant sammenheng mellom privat FoU i startåret og gjennomsnittlig årlig vekst. I modell 3 er koeffisenten -0,031, mens i modell 4 er -0,018 når vi kontroller for land.
+Startnivået er negativt og signifikant i alle fire modellene. Regioner med lite FoU i 2009 har altså hatt høyere vekst enn regioner med mye, noe som betyr ubetinget beta-konvergens. Uten landeffekter er konvergensen klart sterkere for privat FoU (-0,439) enn for offentlig FoU (-0,133). Med landeffekter er de nesten like (-0,222 og -0,228). For offentlig FoU blir konvergensen sterkere når vi kontrollerer for land, altså skjer den mest innad i land.
 
-Resultatene samsvarer med Fitjar (2025), som også finner negative og signifikante koeffisenter på -0,018 og 0,010. Dette viser at regioner med lavere privat FoU har hatt høyere vekst.
+Dette samsvarer godt med Fitjar (Table 2). Han finner også negative og signifikante koeffisienter i alle fire modellene. Uten landeffekter er konvergensen sterkere for privat FoU (-0,017 mot -0,006), og med landeffekter er de like (-0,010 for begge). Også hos Fitjar blir koeffisienten for offentlig FoU sterkere med landeffekter. Koeffisientene hans er mindre fordi han bruker årlig gjennomsnittlig vekst og en kortere periode (2009–2018), mens vi bruker samlet vekst 2008–2023. Mønsteret er likevel det samme, så vår analyse viser det samme som Fitjar.
+
+
+# 17) Betinget konvergens
+
+Fitjar estimerer en betinget konvergensmodell, der veksten i FoU 2009-2023 forkalres med startnivået i 2009 og regionale kjennetegn. Vi estimerer to modeller med vekst i offentlig Fou og tre modeller med vekst i privat Fou som avhengi variabel. Alle modellene har landfaste effekter.
+
+```{r}
+# Vekst: sum av årlige endringer i log (alle tilgjengelige år)
+eu17 <- eu0823 |>
+  filter(!geo %in% c("EL42", "EL62", "ES63", "ES64", "RO22")) |>
+  mutate(aar = if (inherits(time, "Date")) lubridate::year(time) else as.numeric(time))
+vekst <- eu17 |>
+  arrange(geo, aar) |>
+  group_by(geo) |>
+  mutate(
+    dl_pub  = log(pub_RD)  - dplyr::lag(log(pub_RD)),
+    dl_priv = log(priv_RD) - dplyr::lag(log(priv_RD))
+  ) |>
+  summarise(
+    d_pub_RD  = sum(dl_pub,  na.rm = TRUE),
+    d_priv_RD = sum(dl_priv, na.rm = TRUE),
+    .groups = "drop"
+  )
+```
+
+```{r}
+# Startverdier i 2009
+start_2009 <- eu17 |>
+  filter(aar == 2009) |>
+  transmute(
+    geo, country,
+    log_pub_RD  = log(pub_RD),
+    log_priv_RD = log(priv_RD),
+    GDP_log, Capital, Manuf, Density_log, edu
+  )
+
+# Slå sammen vekst og startverdier
+cs <- left_join(vekst, start_2009, by = "geo")
+
+cs
+```
+
+I modell 5 legger vi til en interaksjon mellom log(priv_RD) og log(GDP). Den tester om konvergensen i privat FoU går like raskt i rike og fattige regioner. Er interaksjonen positiv, blir effekten av startnivået svakere i rike regioner. Da tar fattige regioner med lite FoU igjen raskere. Er den negativ, er det de rike regionene som konvergerer raskest. Oppgaveteksten nevner log Public R&D × log GDP, men vi har fulgt Table 3 i Fitjar, som bruker privat FoU.
+
+```{r}
+# Vekst i offentlig FoU
+mod6_pub1 <- lm(d_pub_RD ~ log_pub_RD + log_priv_RD + GDP_log + Capital +
+                  Manuf + Density_log + country, data = cs)
+mod6_pub2 <- update(mod6_pub1, . ~ . + edu)
+
+# Vekst i privat FoU
+mod6_priv1 <- lm(d_priv_RD ~ log_pub_RD + log_priv_RD + GDP_log + Capital +
+                   Manuf + Density_log + country, data = cs)
+mod6_priv2 <- update(mod6_priv1, . ~ . + edu)
+mod6_priv3 <- update(mod6_priv2, . ~ . + log_priv_RD:GDP_log)
+```
+
+```{r}
+#| label: tbl-mod6
+#| tbl-cap: "OLS, vekst i FoU 2009–2023 (betinget konvergens). Tilsvarer Table 3 i Fitjar (2025)."
+modelsummary(
+  list(
+    "(1)" = mod6_pub1, "(2)" = mod6_pub2,
+    "(3)" = mod6_priv1, "(4)" = mod6_priv2, "(5)" = mod6_priv3
+  ),
+  coef_omit = "country",
+  coef_rename = c(
+    "log_pub_RD" = "log(pub_RD)", "log_priv_RD" = "log(priv_RD)",
+    "GDP_log" = "log(GDP)", "Density_log" = "log(Density)",
+    "log_priv_RD:GDP_log" = "log(priv_RD) x log(GDP)"
+  ),
+  statistic = "statistic",
+  stars = c("+" = 0.1, "*" = 0.05, "**" = 0.01, "***" = 0.001),
+  gof_map = c("nobs", "adj.r.squared", "logLik", "F"),
+  notes = "t-verdier i parentes. Kol. 1–2: vekst i offentlig FoU. Kol. 3–5: vekst i privat FoU. Alle modeller har landfaste effekter."
+)
+```
+
+Fitjar finner også at startnivået er negativt og signifikant både for offentlig og privat FoU, så hovedfunnet om betinget konvergens er det samme. Koeffisientene hans er mindre fordi han bruker årlig gjennomsnittlig vekst, mens vi bruker samlet vekst over perioden. Det er likevel noen forskjeller. Fitjar finner at BNP har negativ effekt på veksten i offentlig FoU, mens befolkningstetthet og utdanning har positiv effekt. Hos oss er ingen av disse signifikante. For privat FoU finner Fitjar at industriandel er positiv og signifikant, og at BNP bare er svakt signifikant i én modell. Hos oss er BNP signifikant positiv i alle tre modellene, mens industri ikke er signifikant. Forskjellene kan skyldes at vi bruker en lengre periode (2008–2023 mot 2009–2018), ingen britiske data og at Fitjar måler BNP og utdanning relativt til nasjonalt gjennomsnitt.
+
+# 18) Test for heteroskedastisitet
+
+Vi tester da tre modeller for privat FoU for heteroskedastisitet med Whites alterantive test. De kvadreete residualene regresseres på depredikerte verdiene og de predikerte verdiene i andre. H0 er at feilleddet er homoskedastisk.
+
+```{r}
+# Whites alternative test
+white_alt <- function(mod) {
+  u2   <- resid(mod)^2
+  yhat <- fitted(mod)
+  aux  <- lm(u2 ~ yhat + I(yhat^2))
+  LM   <- nobs(mod) * summary(aux)$r.squared
+  tibble(
+    LM      = LM,
+    p_verdi = pchisq(LM, df = 2, lower.tail = FALSE)
+  )
+}
+
+bind_rows(
+  "Modell (3)" = white_alt(mod6_priv1),
+  "Modell (4)" = white_alt(mod6_priv2),
+  "Modell (5)" = white_alt(mod6_priv3),
+  .id = "Modell"
+) |>
+  mutate(across(where(is.numeric), \(x) round(x, 3)))
+```
+
+Alle tre modellene har p-verdier under 0,01 (LM mellom 11,6 og 13,3). Vi forkaster derfor H0 om homoskedastisitet. Variansen til feilleddet avhenger av de predikerte verdiene, og det betyr at de vanlige standardfeilene kan være feil. Estimatene er fortsatt forventningsrette, men t-verdiene og signifikansen kan være misvisende. Vi bør derfor bruke robuste standardfeil, noe vi gjør i oppgave 19.
+
+# 19) Robuste standardfeil
+
+Siden testen i oppgave 18 viste heteroskedastisitet, estimerer vi modellene fra oppgave 17 på nytt med robuste standardfeil (HC3).
+
+```{r}
+#| label: tbl-mod6-robust
+#| tbl-cap: "OLS, vekst i FoU 2009-2023 med robuste standardfeil (HC3)."
+modelsummary(
+  list(
+    "(1)" = mod6_pub1, "(2)" = mod6_pub2,
+    "(3)" = mod6_priv1, "(4)" = mod6_priv2, "(5)" = mod6_priv3
+  ),
+  vcov = "HC3",
+  coef_omit = "country",
+  coef_rename = c(
+    "log_pub_RD" = "log(pub_RD)", "log_priv_RD" = "log(priv_RD)",
+    "GDP_log" = "log(GDP)", "Density_log" = "log(Density)",
+    "log_priv_RD:GDP_log" = "log(priv_RD) x log(GDP)"
+  ),
+  statistic = "statistic",
+  stars = c("+" = 0.1, "*" = 0.05, "**" = 0.01, "***" = 0.001),
+  gof_map = c("nobs", "adj.r.squared", "logLik", "F"),
+  notes = "Robuste t-verdier (HC3) i parentes. Alle modeller har landfaste effekter."
+)
+```
+
+Robuste standardfeil endrer bare t-verdiene, ikke estimatene. De fleste t-verdiene blir litt mindre, men hovedfunnene står seg. Startnivået er fortsatt negativt og signifikant for både offentlig og privat FoU, og log(GDP) er fortsatt positiv og signifikant i modellene for privat FoU. Det eneste som endres er de svake resultatene: log(priv_RD) i modell 2 er ikke lenger signifikant på 10 %-nivå. Konklusjonene endres altså ikke, noe som gjør resultatene mer troverdige. Fitjar bruker også robuste standardfeil i sine analyser.
+
+
+# 20) Konklusjon 
+
+Fitjar (2025) undersøker (1) hvilke regioner som tiltrekker seg offentlig FoU, og (2) om forskjellene mellom regionene i offentlig og privat FoU har blitt mindre over tid. Han finner at mer utviklede regioner får mer offentlig FoU, hovedsakelig fordi de har mer privat FoU og høyere utdanningsnivå. Han finner også beta-konvergens i både offentlig og privat FoU, men sigma-konvergens bare i privat FoU.
+
+Våre resultater gir i stor grad det samme bildet. I modell 2 (oppgave 11) henger BNP positivt sammen med offentlig FoU alene, men effekten forsvinner når vi kontrollerer for hovedstad, og blir negativ når utdanning tas med. Utdanning er den sterkeste forklaringsvariabelen, noe som støtter Fitjars tolkning om at humankapital, og ikke rikdom i seg selv, trekker til seg offentlig FoU. Vi finner også signifikant beta-konvergens i både offentlig og privat FoU, både ubetinget (oppgave 16) og betinget (oppgave 17), og resultatene holder med robuste standardfeil (oppgave 19).
+
+Det er likevel noen forskjeller. I de betingede modellene finner Fitjar at BNP, tetthet og utdanning påvirker veksten i offentlig FoU, mens vi ikke finner dette. For privat FoU finner vi en sterkere positiv BNP-effekt enn Fitjar, men ingen effekt av industriandel. Forskjellene kan skyldes lengre periode (2008–2023 mot 2009–2018), manglende britiske data, ulik interpolering og at Fitjar måler BNP og utdanning relativt til nasjonalt  gjennomsnitt. Samlet sett støtter funnene likevel Fitjars hovedkonklusjon: FoU-nivåene konvergerer, men offentlig FoU følger i stor grad regioner med høy humankapital.
+
+## Bruk av KI 
+Vi har brukt KI som hjelpemiddel i arbeidet med oppgaven. KI ble brukt til å feilsøke R-kode og chunks, løse problemer med tegnkoding og merge-konflikter. 
