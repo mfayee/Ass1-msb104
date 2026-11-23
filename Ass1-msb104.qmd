@@ -202,7 +202,7 @@ De høyeste verdiene finnes blant annet i norditalienske regioner og Sluttgart, 
 
 De høyeste verdiene finnes i avgrensede byregioner, mens de laveste finnnes i større områder i Sverige og Finland. Dette virker rimelig fordi byområder har mange innbyggere på lite areal, mens større nordiske regioner kan ha mye ubebodd areal. Melilla har en gjennomsnitlig befolkningstetthet på 6038 mens Ovre Norrland har omtrent 3,38.
 
-# 8) Land regioner og tidsperiode Fitjar 
+# 8) Land regioner og tidsperiode Fitjar
 
 Fitjar (2025) undersøker 200 regioner, 20 europeiske land i perioden 2009-2018.
 
