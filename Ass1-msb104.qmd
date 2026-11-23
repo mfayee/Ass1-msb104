@@ -23,10 +23,9 @@ format:
 execute:
   warning: false
   message: false
-
-abstract: (kort sammendrag)
 ---
 
+# Pakker vi har brukt
 
 ```{r}
 library(tidyverse)
@@ -211,7 +210,6 @@ flextable::flextable(topp_bunn) |>
   flextable::colformat_num(j = "Verdi", digits = 2) |>
   flextable::autofit()
 ```
-
 
 # GPD
 
@@ -569,8 +567,7 @@ mod3bPriv <- lm(
 
 Resultatene fra de fire regresjonsmodellene samles i en tabell ved hjelp av modelsummary( ). Dette gjør det mulig å sammenligne utviklingen i offentlig og privat FoU, både med og uten landeffekter.
 
-
-# 16) Ubetinget konvergens 
+# 16) Ubetinget konvergens
 
 ```{r}
 # Samler offentlig og privat FoU i én tabell
@@ -600,7 +597,6 @@ modelsummary::modelsummary(
 Startnivået er negativt og signifikant i alle fire modellene. Regioner med lite FoU i 2009 har altså hatt høyere vekst enn regioner med mye, noe som betyr ubetinget beta-konvergens. Uten landeffekter er konvergensen klart sterkere for privat FoU (-0,439) enn for offentlig FoU (-0,133). Med landeffekter er de nesten like (-0,222 og -0,228). For offentlig FoU blir konvergensen sterkere når vi kontrollerer for land, altså skjer den mest innad i land.
 
 Dette samsvarer godt med Fitjar (Table 2). Han finner også negative og signifikante koeffisienter i alle fire modellene. Uten landeffekter er konvergensen sterkere for privat FoU (-0,017 mot -0,006), og med landeffekter er de like (-0,010 for begge). Også hos Fitjar blir koeffisienten for offentlig FoU sterkere med landeffekter. Koeffisientene hans er mindre fordi han bruker årlig gjennomsnittlig vekst og en kortere periode (2009–2018), mens vi bruker samlet vekst 2008–2023. Mønsteret er likevel det samme, så vår analyse viser det samme som Fitjar.
-
 
 # 17) Betinget konvergens
 
@@ -736,14 +732,14 @@ modelsummary(
 
 Robuste standardfeil endrer bare t-verdiene, ikke estimatene. De fleste t-verdiene blir litt mindre, men hovedfunnene står seg. Startnivået er fortsatt negativt og signifikant for både offentlig og privat FoU, og log(GDP) er fortsatt positiv og signifikant i modellene for privat FoU. Det eneste som endres er de svake resultatene: log(priv_RD) i modell 2 er ikke lenger signifikant på 10 %-nivå. Konklusjonene endres altså ikke, noe som gjør resultatene mer troverdige. Fitjar bruker også robuste standardfeil i sine analyser.
 
-
-# 20) Konklusjon 
+# 20) Konklusjon
 
 Fitjar (2025) undersøker (1) hvilke regioner som tiltrekker seg offentlig FoU, og (2) om forskjellene mellom regionene i offentlig og privat FoU har blitt mindre over tid. Han finner at mer utviklede regioner får mer offentlig FoU, hovedsakelig fordi de har mer privat FoU og høyere utdanningsnivå. Han finner også beta-konvergens i både offentlig og privat FoU, men sigma-konvergens bare i privat FoU.
 
 Våre resultater gir i stor grad det samme bildet. I modell 2 (oppgave 11) henger BNP positivt sammen med offentlig FoU alene, men effekten forsvinner når vi kontrollerer for hovedstad, og blir negativ når utdanning tas med. Utdanning er den sterkeste forklaringsvariabelen, noe som støtter Fitjars tolkning om at humankapital, og ikke rikdom i seg selv, trekker til seg offentlig FoU. Vi finner også signifikant beta-konvergens i både offentlig og privat FoU, både ubetinget (oppgave 16) og betinget (oppgave 17), og resultatene holder med robuste standardfeil (oppgave 19).
 
-Det er likevel noen forskjeller. I de betingede modellene finner Fitjar at BNP, tetthet og utdanning påvirker veksten i offentlig FoU, mens vi ikke finner dette. For privat FoU finner vi en sterkere positiv BNP-effekt enn Fitjar, men ingen effekt av industriandel. Forskjellene kan skyldes lengre periode (2008–2023 mot 2009–2018), manglende britiske data, ulik interpolering og at Fitjar måler BNP og utdanning relativt til nasjonalt  gjennomsnitt. Samlet sett støtter funnene likevel Fitjars hovedkonklusjon: FoU-nivåene konvergerer, men offentlig FoU følger i stor grad regioner med høy humankapital.
+Det er likevel noen forskjeller. I de betingede modellene finner Fitjar at BNP, tetthet og utdanning påvirker veksten i offentlig FoU, mens vi ikke finner dette. For privat FoU finner vi en sterkere positiv BNP-effekt enn Fitjar, men ingen effekt av industriandel. Forskjellene kan skyldes lengre periode (2008–2023 mot 2009–2018), manglende britiske data, ulik interpolering og at Fitjar måler BNP og utdanning relativt til nasjonalt gjennomsnitt. Samlet sett støtter funnene likevel Fitjars hovedkonklusjon: FoU-nivåene konvergerer, men offentlig FoU følger i stor grad regioner med høy humankapital.
 
-## Bruk av KI 
-Vi har brukt KI som hjelpemiddel i arbeidet med oppgaven. KI ble brukt til å feilsøke R-kode og chunks, løse problemer med tegnkoding og merge-konflikter. 
+## Bruk av KI
+
+Vi har brukt KI som hjelpemiddel i arbeidet med oppgaven. KI ble brukt til å feilsøke R-kode og chunks, løse problemer med tegnkoding og merge-konflikter.
